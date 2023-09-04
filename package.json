@@ -1,0 +1,14 @@
+{
+  "name": "iforum",
+  "version": "1.0.0",
+  "description": "Forum para discusões acadêmica",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "pnpm run --filter app dev",
+    "ui:dev": "pnpm run --filter ui dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
