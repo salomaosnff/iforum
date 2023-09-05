@@ -8,9 +8,15 @@ import AutoImport from 'unplugin-auto-import/vite';
 import unocss from 'unocss/vite';
 import pages from 'vite-plugin-pages';
 import layout from 'vite-plugin-vue-layouts';
+import { resolve } from 'path';
+import { fileURLToPath } from 'url';
 
+
+const UI_ROOT = resolve(fileURLToPath(import.meta.url), '../');
 
 export default defineConfig({
+  resolve: { 'alias': { '@iforum/ui': resolve(UI_ROOT, 'src') } },
+
   plugins: [
     VueMacros({
       plugins: {

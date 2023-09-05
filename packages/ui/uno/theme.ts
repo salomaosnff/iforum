@@ -51,6 +51,17 @@ export function presetTheme(): Preset<IForumTheme> {
         /^bg--(.+)/,
         ([,token]) => ({ 'background-color': `var(--theme-${token})` }),
       ],
+      [
+        /^color--(.+)/,
+        ([, token]) => ({ '--current-color': `var(--theme-${token})` }),
+      ],
+      [
+        /^color__(.+)--(.+)/,
+        ([
+          , name,
+          color,
+        ]) => ({ [`--current-${name}-color`]: `var(--theme-${color})` }),
+      ],
     ],
     shortcuts: [
       [

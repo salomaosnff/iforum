@@ -7,17 +7,30 @@ export default defineConfig({
     theme: {
       dark: {
         palette: {
-          primary: 'red',
-          background: 'black',
-          foreground: 'white',
+          primary: '#379936',
+          secondary: '#C91517',
+          background: '#1B1B1B',
+          foreground: '#E4E4E4',
+          panel: '#FFFFFFE0',
+          danger: '#CC2C6C',
+          warning: '#FCA400',
+          info: '#2347FC',
+          success: '#21AF45',
         },
       },
       light: {
         palette: {
-          primary: 'red',
-          background: 'white',
-          foreground: 'black',
+          primary: '#379936',
+          secondary: '#C91517',
+          background: '#1B1B1B',
+          foreground: '#E4E4E4',
+          panel: '#00000033',
+          danger: '#CC2C6C',
+          warning: '#FCA400',
+          info: '#2347FC',
+          success: '#21AF45',
         },
+        
       },
     }, 
   },
