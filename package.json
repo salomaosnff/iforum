@@ -3,12 +3,32 @@
   "version": "1.0.0",
   "description": "Forum para discusões acadêmica",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "pnpm run --filter app dev",
-    "ui:dev": "pnpm run --filter ui dev"
+    "ui:dev": "pnpm run --filter ui dev",
+    "typecheck": "pnpm run --filter ui typecheck",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@salomaosnff/eslint-config": "github:salomaosnff/eslint-config",
+    "@unocss/eslint-config": "^0.55.0",
+    "eslint": "^8.47.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
 }

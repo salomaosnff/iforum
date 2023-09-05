@@ -6,19 +6,7 @@ settings:
 
 importers:
 
-  .: {}
-
-  packages/app:
-    dependencies:
-      '@vueuse/core':
-        specifier: ^10.3.0
-        version: 10.3.0(vue@3.3.4)
-      vue:
-        specifier: ^3.3.4
-        version: 3.3.4
-      vue-router:
-        specifier: ^4.2.4
-        version: 4.2.4(vue@3.3.4)
+  .:
     devDependencies:
       '@commitlint/cli':
         specifier: ^17.7.1
@@ -35,18 +23,6 @@ importers:
       '@unocss/eslint-config':
         specifier: ^0.55.0
         version: 0.55.0(eslint@8.47.0)(typescript@5.0.2)
-      '@unocss/reset':
-        specifier: ^0.55.6
-        version: 0.55.6
-      '@vitejs/plugin-vue':
-        specifier: ^4.2.3
-        version: 4.2.3(vite@4.4.5)(vue@3.3.4)
-      '@vitejs/plugin-vue-jsx':
-        specifier: ^3.0.1
-        version: 3.0.1(vite@4.4.5)(vue@3.3.4)
-      '@vue-macros/volar':
-        specifier: ^0.13.3
-        version: 0.13.3(@vue-macros/reactivity-transform@0.3.22)(typescript@5.0.2)(vue-tsc@1.8.8)(vue@3.3.4)
       eslint:
         specifier: ^8.47.0
         version: 8.47.0
@@ -59,6 +35,31 @@ importers:
       lint-staged:
         specifier: ^13.2.3
         version: 13.2.3
+
+  packages/app:
+    dependencies:
+      '@vueuse/core':
+        specifier: ^10.3.0
+        version: 10.3.0(vue@3.3.4)
+      vue:
+        specifier: ^3.3.4
+        version: 3.3.4
+      vue-router:
+        specifier: ^4.2.4
+        version: 4.2.4(vue@3.3.4)
+    devDependencies:
+      '@unocss/reset':
+        specifier: ^0.55.6
+        version: 0.55.6
+      '@vitejs/plugin-vue':
+        specifier: ^4.2.3
+        version: 4.2.3(vite@4.4.5)(vue@3.3.4)
+      '@vitejs/plugin-vue-jsx':
+        specifier: ^3.0.1
+        version: 3.0.1(vite@4.4.5)(vue@3.3.4)
+      '@vue-macros/volar':
+        specifier: ^0.13.3
+        version: 0.13.3(@vue-macros/reactivity-transform@0.3.22)(typescript@5.0.2)(vue-tsc@1.8.8)(vue@3.3.4)
       sass:
         specifier: ^1.65.1
         version: 1.65.1
@@ -102,18 +103,6 @@ importers:
         specifier: ^4.2.4
         version: 4.2.4(vue@3.3.4)
     devDependencies:
-      '@commitlint/cli':
-        specifier: ^17.7.1
-        version: 17.7.1
-      '@commitlint/config-conventional':
-        specifier: ^17.7.0
-        version: 17.7.0
-      '@salomaosnff/eslint-config':
-        specifier: github:salomaosnff/eslint-config
-        version: github.com/salomaosnff/eslint-config/f5ccbdaddf0ef2b4a4f522144e31cd91f10759f8(eslint@8.47.0)
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.3.0
-        version: 6.3.0(@typescript-eslint/parser@6.5.0)(eslint@8.47.0)(typescript@5.0.2)
       '@unocss/eslint-config':
         specifier: ^0.55.0
         version: 0.55.0(eslint@8.47.0)(typescript@5.0.2)
@@ -129,18 +118,6 @@ importers:
       '@vue-macros/volar':
         specifier: ^0.13.3
         version: 0.13.3(@vue-macros/reactivity-transform@0.3.22)(typescript@5.0.2)(vue-tsc@1.8.8)(vue@3.3.4)
-      eslint:
-        specifier: ^8.47.0
-        version: 8.47.0
-      eslint-plugin-vue:
-        specifier: ^9.17.0
-        version: 9.17.0(eslint@8.47.0)
-      husky:
-        specifier: ^8.0.3
-        version: 8.0.3
-      lint-staged:
-        specifier: ^13.2.3
-        version: 13.2.3
       sass:
         specifier: ^1.65.1
         version: 1.65.1
