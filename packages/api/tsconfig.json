@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "lib": ["ESNext"],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strictPropertyInitialization": false,
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "strict": true,
+        "target": "ES2021",
+        "outDir": "dist",
+        "declaration": true,
+        "declarationDir": "dist"
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
