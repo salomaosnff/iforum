@@ -16,6 +16,7 @@ export default defineConfig({
           warning: '#FCA400',
           info: '#2347FC',
           success: '#21AF45',
+          'input-bg': '#FFFFFF19',
         },
       },
       light: {
@@ -29,6 +30,7 @@ export default defineConfig({
           warning: '#FCA400',
           info: '#2347FC',
           success: '#21AF45',
+          'input-bg': '#00000019',
         },
         
       },

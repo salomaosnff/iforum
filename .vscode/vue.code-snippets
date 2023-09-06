@@ -1,0 +1,57 @@
+{
+  "Vue 3 component (Composition API + Style)": {
+    "prefix": "vue3",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "$1",
+      "</script>",
+      "",
+      "<template>",
+      "$2",
+      "</template>",
+      "",
+      "<style lang=\"scss\">",
+      "$3",
+      "</style>",
+			""
+    ]
+  },
+  "Vue 3 Route Config": {
+    "prefix": "vue3r",
+    "body": [
+      "<route lang=\"yml\">",
+      "  name: $4",
+			"  meta:",
+			"    layout: ${5:default}",
+      "</route>",
+			""
+    ]
+  },
+  "Vue 3 component (Template Only)": {
+    "prefix": "vue3t",
+    "body": [
+      "<template>",
+      "$1",
+      "</template>",
+			""
+    ]
+  },
+  "Vue 3 component (Script Setup)": {
+    "prefix": "vue3ss",
+    "body": [
+      "<script setup lang=\"ts\">",
+      "$1",
+      "</script>",
+			""
+    ]
+  },
+  "Vue 3 component (Style + SCSS)": {
+    "prefix": "vue3s",
+    "body": [
+      "<style lang=\"scss\">",
+      "$1",
+      "</style>",
+			""
+    ]
+  },
+}

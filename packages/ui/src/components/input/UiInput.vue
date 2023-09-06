@@ -1,14 +1,91 @@
 <script setup lang="ts">
+import { vColor } from '@iforum/ui/directive/v-color/vColor';
+
+defineProps({
+  color: {
+    type: String,
+    default: 'foreground',
+  },
+
+  error: {
+    type: String,
+    default: undefined,
+  },
+  label: {
+    type: String,
+    default: undefined,
+  },
+  hint: {
+    type: String,
+    default: undefined,
+  },
+  hideMessages: Boolean,
+  disabled: Boolean,
+  prependIcon: {
+    type: String,
+    default: undefined,
+  },
+  appendIcon: {
+    type: String,
+    default: undefined,
+  },
+});
 
 </script>
 
 <template>
-  <div class="w-400px flex flex-col gap-1">
-    <label for="Name">Nome</label>
-    <input type="text">
-  </div>
+  <label
+    v-color="color"
+    class="ui-input block"
+    :class="{'ui-input--error': error, 'ui-input--disabled': disabled}"
+  >
+    <span
+      v-if="label"
+      class="ui-input__label font-bold"
+    >{{ label }}</span>
+    <div class="ui-input__field flex gap-2 px-2 py-1 rounded-2">
+      <slot name="prepend" />
+      <div class="flex-1">
+        <slot />
+      </div>
+      <slot name="append" />
+    </div>
+    <div class="text-3">
+      <p
+        v-if="error"
+        class="ui-input__error fg--danger"
+      >{{ error }}</p>
+      <p
+        v-else-if="hint"
+        class="ui-input__hint opacity-75 "
+      >{{ hint }}</p>
+    </div>
+  </label>
 </template>
 
 <style lang="scss">
+
+.ui-input {
+  &__field {
+    background-color: var(--theme-input-bg);
+    &:focus-within {
+      border: 1px solid var(--current-color);
+
+    }
+  }
+  &--error {
+    --current-color: var(--theme-danger) !important;
+    .ui-input__field {
+      border: 1px solid var(--current-color);
+    }
+    .ui-input__label {
+      color: var(--current-color)
+    }
+  }
+  &--disabled {
+    @apply: opacity-50 pointer-events-none select-none;
+
+  }
+}
 
 </style>

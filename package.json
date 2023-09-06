@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "pnpm run --filter app dev",
     "ui:dev": "pnpm run --filter ui dev",
+    "api:dev": "pnpm run --filter api dev",
     "typecheck": "pnpm run --filter ui typecheck",
     "prepare": "husky install"
   },

@@ -41,5 +41,5 @@ export default defineConfig({
     pages(),
     layout(),
   ],
-
+  test: { environment: 'happy-dom' },
 });
