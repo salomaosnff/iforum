@@ -11,7 +11,7 @@ export interface TopicFields extends Entity{
   tags: string[];
 }
 
-export class Topic extends Entity{
+export class TopicEntity extends Entity{
   slug: string;
   title: string;
   body: string;
