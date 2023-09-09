@@ -1,24 +1,28 @@
 import { Entity, EntityFields } from '@/@shared/Entity';
 import { ValidationError } from '@/@shared/error/validation.error';
 import { Result } from '@/@shared/result';
+import { UserRole } from './user_role.enum';
+import { AcademicEmail } from '@/@shared/vo/academic_email.vo';
 
 interface UserFields extends EntityFields {
   name: string;
   password: string;
-  email: string;
-  role: unknown;
-  score: number;
+  email: AcademicEmail;
+  role?: unknown;
+  score?: number;
 }
 
 export class UserEntity extends Entity {
   name: string;
   password: string;
-  email: string;
-  role: unknown;
+  email: AcademicEmail;
+  role: UserRole;
   score: number;
 
   static of(data: UserFields) {
-    return new UserEntity(data);
+    data.score ??= 0;
+    data.role ??= UserRole.STUDENT;
+    return  this.create(new UserEntity(data));
   }
 
   validate(): Result<void, ValidationError> {
@@ -34,7 +38,7 @@ export class UserEntity extends Entity {
       return Result.fail(new ValidationError('email is required'));
     }
 
-    if (!this.role) {
+    if (typeof this.role !== 'number') {
       return Result.fail(new ValidationError('role is required'));
     }
 

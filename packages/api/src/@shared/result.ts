@@ -59,7 +59,17 @@ function fail<E>(error: E) {
   return new Fail(error);
 }
 
+function isOk<T,E>(result: Result<T,E>): result is Ok<T>{
+  return result instanceof Ok;
+}
+
+function isFail<T,E>(result: Result<T,E>): result is Fail<E>{
+  return result instanceof Fail;
+}
+
 export const Result = {
   ok,
   fail,
+  isOk,
+  isFail,
 };

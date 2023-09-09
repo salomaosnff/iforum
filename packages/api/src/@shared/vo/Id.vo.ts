@@ -1,6 +1,6 @@
 import util from 'util';
 
-export abstract class Id<T=unknown>{
+export abstract class Id<T=string>{
     
   protected constructor(protected id: T) {}
 
