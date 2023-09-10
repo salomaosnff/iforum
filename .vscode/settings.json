@@ -12,5 +12,7 @@
     "files.autoSave": "onFocusChange",
     "cSpell.words": [
         "iforum"
-    ]
+    ],
+    "scss.lint.unknownAtRules": "ignore",
+    "css.lint.unknownAtRules": "ignore"
 }
