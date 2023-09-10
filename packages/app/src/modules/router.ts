@@ -1,7 +1,5 @@
 import { AppModule } from './types/module';
-import {
-  Router, createRouter, createWebHistory, 
-} from 'vue-router';
+import { Router, createRouter, createWebHistory } from 'vue-router';
 import routes from 'virtual:generated-pages';
 import { setupLayouts } from 'virtual:generated-layouts';
 
