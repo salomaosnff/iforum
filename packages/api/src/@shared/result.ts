@@ -1,7 +1,7 @@
 /*eslint-disable @typescript-eslint/no-explicit-any */
 import util from 'util';
 
-class Ok<T> {
+class Ok<T, E = never> {
   constructor(readonly data: T) {}
 
   isOk() {
@@ -16,12 +16,24 @@ class Ok<T> {
     return this.data;
   }
 
+  map<U, EE>(mapper: (data: T) => Result<U, EE>): Result<U, E | EE>
+  map<U>(mapper: (data: T) => U): Result<U, E>
+  map<U, EE>(mapper: (data: T) => U | Result<U, EE>): Result<U, E | EE> {
+    const result = mapper(this.data);
+
+    if (Result.is(result)) {
+      return result;
+    }
+
+    return Result.ok(result);
+  }
+
   [util.inspect.custom](depth: any, options: any) {
     return options.stylize(`Result(OK){${util.inspect(this.data)}}`, 'spetial');
   }
 }
 
-class Fail<T> {
+class Fail<E, T = never> {
   constructor(readonly error: T) {}
 
   isOk() {
@@ -36,12 +48,17 @@ class Fail<T> {
     throw this.error;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  map<U, EE>(mapper: (data: T) => Result<U, EE>) {
+    return this as unknown as Result<U, E | EE>;  
+  }
+
   [util.inspect.custom](depth: any, options: any) {
     return options.stylize(`Result(Fail){${util.inspect(this.error)}}`, 'spetial');
   }
 }
 
-export type Result<T, E> = Ok<T> | Fail<E>
+export type Result<T, E> = Ok<T, E> | Fail<E, T>
 
 /**
  * Cria um resultado de sucesso
@@ -56,20 +73,25 @@ function ok(data?: any) {
  * Cria um resultado de falha
  */
 function fail<E>(error: E) {
-  return new Fail(error);
+  return new Fail<E, any>(error);
 }
 
-function isOk<T,E>(result: Result<T,E>): result is Ok<T>{
+function isOk<T,E>(result: Result<T,E>): result is Ok<T, E>{
   return result instanceof Ok;
 }
 
-function isFail<T,E>(result: Result<T,E>): result is Fail<E>{
+function isFail<T,E>(result: Result<T,E>): result is Fail<E, T>{
   return result instanceof Fail;
+}
+
+function is<T, E>(value: any): value is Result<T, E> {
+  return isOk(value) || isFail(value);
 }
 
 export const Result = {
   ok,
   fail,
+  is,
   isOk,
   isFail,
 };

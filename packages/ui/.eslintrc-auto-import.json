@@ -285,6 +285,7 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "WritableComputedRef": true
+    "WritableComputedRef": true,
+    "useOverlayStack": true
   }
 }

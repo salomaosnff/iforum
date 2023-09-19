@@ -13,17 +13,15 @@ export class RegisterUserStory{
   }
 
   async execute(data: RegisterUserStoryInput): Promise<Result<UserEntity, ValidationError | UserEmailAlreadyRegisteredError | InvalidAcademicEmailError>>{
-    const emailResult = AcademicEmail.of(data.email);
-    if (Result.isFail(emailResult)){
-      return emailResult;
-    }
-    const userResult = UserEntity.of({
+    const userResult = AcademicEmail.of(data.email).map((email) => UserEntity.of({
       ...data,
-      email: emailResult.unwrap(), 
-    });
+      email, 
+    }));
+
     if (Result.isFail(userResult)){
       return userResult;
     }
+
     const user = userResult.unwrap();
     const existingUserResult = await this.userRepository.findByEmail(user.email);
 
@@ -32,6 +30,7 @@ export class RegisterUserStory{
     }
 
     await this.userRepository.create(user);
+    
     return Result.ok(user);
   }
 }

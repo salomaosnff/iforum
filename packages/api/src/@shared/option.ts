@@ -16,6 +16,18 @@ export class Some<T> {
     return this.data;
   }
 
+  map<U>(mapper: (data: T) => Option<U>): Option<U>
+  map<U>(mapper: (data: T) => U): Option<U>
+  map<U>(mapper: (data: T) => U | Option<U>): Option<U> {
+    const result = mapper(this.data);
+
+    if (Option.is(result)) {
+      return result;
+    }
+
+    return Option.some(result);
+  }
+
   [util.inspect.custom](depth: any, options: any) {
     return options.stylize(`Some{${util.inspect(this.data)}}`, 'spetial');
   }
@@ -33,6 +45,13 @@ export class None{
 
   unwrap(): void {
     throw new Error('Called Option::unwrap() on a None value');
+  }
+
+  map<U>(mapper: (data: unknown) => Option<U>): Option<U>
+  map<U>(mapper: (data: unknown) => U): Option<U>
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  map<U>(mapper: (data: unknown) => U | Option<U>): Option<U> {
+    return this;
   }
 
   [util.inspect.custom](depth: any, options: any) {
@@ -67,9 +86,14 @@ function isNone<T>(result: Option<T>): result is None{
   return result === _none;
 }
 
+function is<T>(value: any): value is Option<T> {
+  return isSome(value) || isNone(value);
+}
+
 export const Option = {
   none,
   some,
+  is,
   isSome,
   isNone,
 };

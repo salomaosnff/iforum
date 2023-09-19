@@ -18,6 +18,8 @@ declare module 'vue' {
     UiIcon: typeof import('./components/icon/UiIcon.vue')['default']
     UiInput: typeof import('./components/input/UiInput.vue')['default']
     UiIput: typeof import('./components/input/UiIput.vue')['default']
+    UiOverlayMenu: typeof import('./components/ui-overlay-menu/UiOverlayMenu.vue')['default']
+    UiPopup: typeof import('./components/ui-overlay-menu/UiPopup.vue')['default']
     UiTextField: typeof import('./components/text-field/UiTextField.vue')['default']
   }
 }
