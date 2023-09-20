@@ -16,7 +16,7 @@ importers:
         version: 17.7.0
       '@salomaosnff/eslint-config':
         specifier: github:salomaosnff/eslint-config
-        version: github.com/salomaosnff/eslint-config/0cd2d82ea64f0b9fe43ee5548006beb23f30935a(eslint@8.47.0)
+        version: github.com/salomaosnff/eslint-config/59673f7df718b406cb52b9644857861722b79134(eslint@8.47.0)
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.3.0
         version: 6.3.0(@typescript-eslint/parser@6.5.0)(eslint@8.47.0)(typescript@5.2.2)
@@ -41,6 +41,9 @@ importers:
       fastify:
         specifier: ^4.22.2
         version: 4.22.2
+      limax:
+        specifier: ^4.1.0
+        version: 4.1.0
     devDependencies:
       '@types/node':
         specifier: ^20.5.9
@@ -2627,6 +2630,10 @@ packages:
       ieee754: 1.2.1
     dev: false
 
+  /bulk-replace@0.0.1:
+    resolution: {integrity: sha512-IxLEnfsCYLjlpf6mG7SWpWgA4A8IAT5dAX3FxXHFn+6FTLf3ums771elQ74sj1BCOVanBf6esu0rEC6zgwfmIg==}
+    dev: false
+
   /bundle-name@3.0.0:
     resolution: {integrity: sha512-PKA4BeSvBpQKQ8iPOGCSiell+N8P+Tf1DlwqmYhpe2gAhKPHn8EYOxVT+ShuGmhg8lN8XiSlS80yiExKXrURlw==}
     engines: {node: '>=12'}
@@ -3735,6 +3742,13 @@ packages:
     hasBin: true
     dev: true
 
+  /hepburn@1.2.1:
+    resolution: {integrity: sha512-v/VUHmiHhNbjDBGxYkwDXzYvfOTIKFquAn0KrPtH1D3Zv539VBPEOGYoWpLnb/FBT9vAx9anQef3noJZ2fPIBw==}
+    engines: {node: '>=4'}
+    dependencies:
+      bulk-replace: 0.0.1
+    dev: false
+
   /hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
     dev: true
@@ -4201,6 +4215,16 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /limax@4.1.0:
+    resolution: {integrity: sha512-vciK5Mx+y+GrJjcVjbEjItzZ6Pbt+LXCb9d3qo3B+HcnTLZYRFyuszD6Hbwk0PDVEmZzS+FA0nT5aBy1HlZgGg==}
+    engines: {node: '>=14'}
+    dependencies:
+      hepburn: 1.2.1
+      lodash.deburr: 4.1.0
+      pinyin-pro: 3.16.6
+      speakingurl: 14.0.1
+    dev: false
+
   /lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
@@ -4274,6 +4298,10 @@ packages:
   /lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
     dev: true
+
+  /lodash.deburr@4.1.0:
+    resolution: {integrity: sha512-m/M1U1f3ddMCs6Hq2tAsYThTBDaAKFDX3dwDo97GEYzamXi9SqUpjWi/Rrj/gf3X2n8ktwgZrlP1z6E3v/IExQ==}
+    dev: false
 
   /lodash.isfunction@3.0.9:
     resolution: {integrity: sha512-AirXNj15uRIMMPihnkInB4i3NHeb4iBtNg9WRWuK2o31S+ePwwNmDPaTL3o7dTJ+VXNZim7rFs4rxN4YU1oUJw==}
@@ -4814,6 +4842,10 @@ packages:
       thread-stream: 2.4.0
     dev: false
 
+  /pinyin-pro@3.16.6:
+    resolution: {integrity: sha512-l4W4c/K49kj33P5JwpAHkkN/rlxeOwQ07bLhMg8kJVIsdxD3Cpa3aIBF1PKUPt3rxbebawmBoeR1x8VgZmFO5w==}
+    dev: false
+
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
@@ -5257,6 +5289,11 @@ packages:
   /spdx-license-ids@3.0.13:
     resolution: {integrity: sha512-XkD+zwiqXHikFZm4AX/7JSCXA98U5Db4AFd5XUg/+9UNtnH75+Z9KxtpYiJZx36mUDVOwH83pl7yvCer6ewM3w==}
     dev: true
+
+  /speakingurl@14.0.1:
+    resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /split2@3.2.2:
     resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
@@ -6399,11 +6436,11 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  github.com/salomaosnff/eslint-config/0cd2d82ea64f0b9fe43ee5548006beb23f30935a(eslint@8.47.0):
-    resolution: {tarball: https://codeload.github.com/salomaosnff/eslint-config/tar.gz/0cd2d82ea64f0b9fe43ee5548006beb23f30935a}
-    id: github.com/salomaosnff/eslint-config/0cd2d82ea64f0b9fe43ee5548006beb23f30935a
+  github.com/salomaosnff/eslint-config/59673f7df718b406cb52b9644857861722b79134(eslint@8.47.0):
+    resolution: {tarball: https://codeload.github.com/salomaosnff/eslint-config/tar.gz/59673f7df718b406cb52b9644857861722b79134}
+    id: github.com/salomaosnff/eslint-config/59673f7df718b406cb52b9644857861722b79134
     name: '@salomaosnff/eslint-config'
-    version: 1.0.3
+    version: 1.0.4
     peerDependencies:
       eslint: ^8.46.0
     dependencies:

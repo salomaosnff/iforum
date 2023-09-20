@@ -1,25 +1,41 @@
 /*eslint-disable @typescript-eslint/no-explicit-any */
 import util from 'util';
 
-class Ok<T, E = never> {
-  constructor(readonly data: T) {}
+export abstract class Result<T, E> {
+  abstract isOk(): boolean;
+  abstract isFail(): boolean;
+  abstract unwrap(): T;
 
-  isOk() {
-    return true;
+  static isOk<T, E>(value: Result<T, E>): value is Ok<T, E> {
+    return value instanceof Ok;
   }
 
-  isFail() {
-    return false;
+  static isFail<T, E>(value: Result<T, E>): value is Fail<E, T> {
+    return value instanceof Fail;
   }
 
-  unwrap(): T {
-    return this.data;
+  static is<T, E>(value: any): value is Result<T, E> {
+    return value instanceof Result;
   }
 
-  map<U, EE>(mapper: (data: T) => Result<U, EE>): Result<U, E | EE>
-  map<U>(mapper: (data: T) => U): Result<U, E>
-  map<U, EE>(mapper: (data: T) => U | Result<U, EE>): Result<U, E | EE> {
-    const result = mapper(this.data);
+  static ok<T>(data: T): Ok<T>;
+  static ok(): Ok<void>;
+  static ok(data?: any) {
+    return new Ok(data);
+  }
+
+  static fail<E>(error: E): Result<any, E> {
+    return new Fail(error);
+  }
+
+  map<U>(fn: (data: T) => Result<U, E>): Result<U, E>;
+  map<U>(fn: (data: T) => U): Result<U, E>;
+  map<U>(fn: (data: T) => U | Result<U, E>): Result<U, E> {
+    if (Result.isFail(this)) {
+      return this as any;
+    }
+
+    const result = fn(this.unwrap());
 
     if (Result.is(result)) {
       return result;
@@ -27,14 +43,38 @@ class Ok<T, E = never> {
 
     return Result.ok(result);
   }
+}
+
+class Ok<T, E = any> extends Result<T, E> {
+  constructor(readonly data: T) {
+    super();
+  }
 
   [util.inspect.custom](depth: any, options: any) {
-    return options.stylize(`Result(OK){${util.inspect(this.data)}}`, 'spetial');
+    return options.stylize(`Ok{${util.inspect(this.data)}}`, 'special');
+  }
+
+  isOk() {
+    return true;
+  }
+
+  isFail() {
+    return false;
+  }
+
+  unwrap() {
+    return this.data;
   }
 }
 
-class Fail<E, T = never> {
-  constructor(readonly error: T) {}
+class Fail<E, T = any> extends Result<T, E> {
+  constructor(readonly error: E) {
+    super();
+  }
+
+  [util.inspect.custom](depth: any, options: any) {
+    return options.stylize(`Fail{${util.inspect(this.error)}}`, 'special');
+  }
 
   isOk() {
     return false;
@@ -45,53 +85,6 @@ class Fail<E, T = never> {
   }
 
   unwrap(): T {
-    throw this.error;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  map<U, EE>(mapper: (data: T) => Result<U, EE>) {
-    return this as unknown as Result<U, E | EE>;  
-  }
-
-  [util.inspect.custom](depth: any, options: any) {
-    return options.stylize(`Result(Fail){${util.inspect(this.error)}}`, 'spetial');
+    throw new Error('Called unwrap on a Fail result');
   }
 }
-
-export type Result<T, E> = Ok<T, E> | Fail<E, T>
-
-/**
- * Cria um resultado de sucesso
- */
-function ok<T>(data: T): Ok<T>;
-function ok(): Ok<void>;
-function ok(data?: any) {
-  return new Ok(data);
-}
-
-/**
- * Cria um resultado de falha
- */
-function fail<E>(error: E) {
-  return new Fail<E, any>(error);
-}
-
-function isOk<T,E>(result: Result<T,E>): result is Ok<T, E>{
-  return result instanceof Ok;
-}
-
-function isFail<T,E>(result: Result<T,E>): result is Fail<E, T>{
-  return result instanceof Fail;
-}
-
-function is<T, E>(value: any): value is Result<T, E> {
-  return isOk(value) || isFail(value);
-}
-
-export const Result = {
-  ok,
-  fail,
-  is,
-  isOk,
-  isFail,
-};

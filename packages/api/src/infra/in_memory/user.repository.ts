@@ -22,4 +22,13 @@ export class InMemoryUserRepository implements UserRepository{
     return Option.none();
   }
 
+  async findById(id: UserEntity['id']): Promise<Option<UserEntity>> {
+    const user = this.db.get(id.value);
+
+    if (user){
+      return Option.some(user);
+    }
+
+    return Option.none();
+  }
 }

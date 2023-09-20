@@ -1,25 +1,42 @@
 /*eslint-disable @typescript-eslint/no-explicit-any */
 import util from 'util';
 
-export class Some<T> {
-  constructor(readonly data: T) {}
+export abstract class Option<T> {
+  abstract unwrap(): T;
 
-  isSome() {
-    return true;
+  static isSome<T>(value: Option<T>): boolean {
+    return value instanceof Some;
   }
 
-  isNone() {
-    return false;
+  static isNone<T>(value: Option<T>): boolean {
+    return value === _None;
   }
 
-  unwrap(): T {
-    return this.data;
+  static some<T>(data: T): Option<T> {
+    return new Some(data);
   }
 
-  map<U>(mapper: (data: T) => Option<U>): Option<U>
-  map<U>(mapper: (data: T) => U): Option<U>
-  map<U>(mapper: (data: T) => U | Option<U>): Option<U> {
-    const result = mapper(this.data);
+  static is<T>(value: any): value is Option<T> {
+    return value instanceof Option;
+  }
+
+  static none<T>(): Option<T> {
+    return _None;
+  }
+
+  /**
+   * Maps an Option<T> to Option<U> by applying a function to a contained value.
+   * @param fn The function to apply
+   * @returns Option<U>
+   */
+  map<U>(fn: (data: T) => Option<U>): Option<U>;
+  map<U>(fn: (data: T) => U): Option<U>;
+  map<U>(fn: (data: T) => U | Option<U>): Option<U> {
+    if (Option.isNone(this)) {
+      return this as any;
+    }
+
+    const result = fn(this.unwrap());
 
     if (Option.is(result)) {
       return result;
@@ -27,73 +44,24 @@ export class Some<T> {
 
     return Option.some(result);
   }
+}
+
+class Some extends Option<any> {
+  constructor(readonly data: any) {
+    super()
+  }
 
   [util.inspect.custom](depth: any, options: any) {
     return options.stylize(`Some{${util.inspect(this.data)}}`, 'spetial');
   }
-}
-
-export class None{
-
-  isSome() {
-    return false;
-  }
-
-  isNone() {
-    return true;
-  }
-
-  unwrap(): void {
-    throw new Error('Called Option::unwrap() on a None value');
-  }
-
-  map<U>(mapper: (data: unknown) => Option<U>): Option<U>
-  map<U>(mapper: (data: unknown) => U): Option<U>
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  map<U>(mapper: (data: unknown) => U | Option<U>): Option<U> {
-    return this;
-  }
-
-  [util.inspect.custom](depth: any, options: any) {
-    return options.stylize('None', 'spetial');
+  
+  unwrap() {
+    return this.data;
   }
 }
 
-export type Option<T> = Some<T> | None
-
-/**
- * Cria um resultado de sucesso
- */
-function some<T>(data: T): Some<T>{
-  return new Some(data);
-}
-
-/**
- * Cria um resultado de falha
- */
-const _none = new None();
-
-function none() {
-  return _none;
-}
-
-
-function isSome<T>(result: Option<T>): result is Some<T>{
-  return result instanceof Some;
-}
-
-function isNone<T>(result: Option<T>): result is None{
-  return result === _none;
-}
-
-function is<T>(value: any): value is Option<T> {
-  return isSome(value) || isNone(value);
-}
-
-export const Option = {
-  none,
-  some,
-  is,
-  isSome,
-  isNone,
-};
+const _None = new (class None extends Option<any> {
+  unwrap(): any {
+    throw new Error('Cannot unwrap None');
+  }
+})
