@@ -15,4 +15,10 @@ export interface TopicRepository {
      * @param slug Slug do tópico
      */
     findBySlug(slug: Slug): Promise<Option<TopicEntity>>;
+
+    /**
+     * Busca um tópico pelo seu id
+     * @param id Id do tópico
+     */
+    findById(id: TopicEntity['id']): Promise<Option<TopicEntity>>;
 }

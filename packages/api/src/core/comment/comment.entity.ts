@@ -1,18 +1,29 @@
-import { Entity } from '@/@shared/Entity';
+import { Entity, EntityFields } from '@/@shared/Entity';
 import { ValidationError } from '@/@shared/error/validation.error';
 import { Result } from '@/@shared/result';
 import { UserEntity } from '../user/user.entity';
 import { TopicEntity } from '../topic/topic.entity';
 import { Id } from '@/@shared/vo/Id.vo';
 
+export interface CommentFields extends EntityFields {
+  author: UserEntity;
+  body: string;
+  rate?: number;
+  replyTo?: CommentEntity['id'];
+  topicId: TopicEntity['id'];
+}
+
 
 export class CommentEntity extends Entity{
-
   author: UserEntity;
   body: string;
   rate: number;
   replyTo?: CommentEntity['id'];
   topicId: TopicEntity['id'];
+
+  static of(data: CommentFields) {
+    return this.create(new CommentEntity(data));
+  }
 
   validate(): Result<void, ValidationError> {
     if (!this.author){
