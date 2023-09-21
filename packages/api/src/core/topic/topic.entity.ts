@@ -1,4 +1,4 @@
-import { Entity, EntityFields } from '@/@shared/Entity';
+import { Entity, EntityFields } from '@/@shared/entity';
 import { ValidationError } from '@/@shared/error/validation.error';
 import { Result } from '@/@shared/result';
 import { InvalidSlugError, Slug } from '@/@shared/vo/slug.vo';
