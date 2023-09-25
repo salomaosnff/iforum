@@ -1,14 +1,12 @@
-import { TopicEntity } from "@/core/topic/topic.entity";
-import { CommentRepository } from "../comment.repository";
-import { UserEntity } from "@/core/user/user.entity";
-import { CommentEntity } from "@/core/comment/comment.entity";
-import { UUID4 } from "@/@shared/vo/UUID4.vo";
-import { Result } from "@/@shared/result";
-import { TopicRepository } from "@/application/topic/topic.repository";
-import { Option } from "@/@shared/option";
-import { TopicNotFound } from "@/application/topic/error/topic_not_found";
-import { UserRepository } from "@/application/user/user.repository";
-import { UserNotAuthenticatedError } from "@/application/user/error/user_not_authenticated.error";
+import { CommentRepository } from '../comment.repository';
+import { CommentEntity } from '@/core/comment/comment.entity';
+import { UUID4 } from '@/@shared/vo/UUID4.vo';
+import { Result } from '@/@shared/result';
+import { TopicRepository } from '@/application/topic/topic.repository';
+import { Option } from '@/@shared/option';
+import { TopicNotFound } from '@/application/topic/error/topic_not_found';
+import { UserRepository } from '@/application/user/user.repository';
+import { UserNotAuthenticatedError } from '@/application/user/error/user_not_authenticated.error';
 
 export interface CreateCommentInput {
   body: string;
@@ -39,7 +37,9 @@ export class CreateCommentStory {
       return userIdResult;
     }
 
-    const replyToIdResult = input.replyToId ? UUID4.of(input.replyToId) : Result.ok(undefined);
+    const replyToIdResult = input.replyToId ? 
+      UUID4.of(input.replyToId).map(id => Option.some(id)) : 
+      Result.ok(Option.none<UUID4>());
 
     if (Result.isFail(replyToIdResult)) {
       return replyToIdResult;
@@ -61,7 +61,7 @@ export class CreateCommentStory {
       body: input.body,
       topicId,
       author,
-      replyTo: replyToIdResult.unwrap()
+      replyTo: replyToIdResult.unwrap(),
     });
 
     if (Result.isFail(commentResult)) {

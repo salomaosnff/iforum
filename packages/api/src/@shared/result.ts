@@ -43,6 +43,29 @@ export abstract class Result<T, E> {
 
     return Result.ok(result);
   }
+
+  static try<T, E>(fn: () => Promise<Result<T, E>>): Promise<Result<T, E>>
+  static try<T, E>(fn: () => Promise<T>): Promise<Result<T, E>>
+  static try<T, E>(fn: () => Result<T, E>): Result<T, E>
+  static try<T, E>(fn: () => T): Result<T, E>
+  static try(fn: any): any {
+    try {
+      const result = fn();
+
+      if (result instanceof Promise) {
+        return result.then(Result.ok).catch(Result.fail);
+      }
+
+      if (Result.is(result)) {
+        return result;
+      }
+
+      return Result.ok(result);
+    }
+    catch (err) {
+      return Result.fail(err);
+    }
+  }
 }
 
 class Ok<T, E = any> extends Result<T, E> {

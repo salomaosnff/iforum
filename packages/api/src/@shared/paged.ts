@@ -3,3 +3,8 @@ export interface Paged<T> {
   totalItems: number
   totalPages: number
 }
+
+export interface PageParams {
+  page: number
+  size: number
+}

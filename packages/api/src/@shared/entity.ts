@@ -9,7 +9,8 @@ export interface EntityFields {
   updatedAt?: Date;
 }
 
-export abstract class Entity {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export abstract class Entity<T = any> {
   id: Id;
   createdAt: Date;
   updatedAt: Date;
@@ -25,14 +26,25 @@ export abstract class Entity {
   }
 
   static create<T extends Entity>(entity: T): Result<T, ValidationError> {
-    const validationResult = entity.validate() as Result<T, ValidationError>;
 
-    if (validationResult.isOk()) {
-      return Result.ok(entity);
+    const validationResult = entity.validate();
+
+    if (Result.isFail(validationResult)) {
+      return Result.fail(validationResult.error);
     }
 
-    return validationResult;
+    return Result.ok(entity);
   }
+
+  assign(data: Partial<T>): Result<this, ValidationError>{
+    Object.assign(this, data);
+    this.updatedAt = new Date();
+    const result = this.validate();
+    if (Result.isFail(result)) {
+      return Result.fail(result.error);
+    }
+    return Result.ok(this);
+  }  
 
   abstract validate(): Result<void, ValidationError>;
 }
