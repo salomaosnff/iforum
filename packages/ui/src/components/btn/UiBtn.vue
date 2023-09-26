@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {vColor} from '@iforum/ui/directive/vColor'
+import { vColor } from '@iforum/ui/directive/v-color/vColor';
 
 defineProps({
   color: {
@@ -16,18 +16,23 @@ defineProps({
     type: String,
     default: 'button',
   },
-  icon: Boolean
+  icon: Boolean,
 
 });
 
 </script>
 
 <template>
-  <component v-color="color" :is="tag" class="ui-btn" :class="[`ui-btn--${variant}`, {
-    'ui-btn--rounded': rounded,
-    'ui-btn--disabled': disabled,
-    'ui-btn--icon': icon
-  }]" >
+  <component
+    :is="tag"
+    v-color="color"
+    class="ui-btn"
+    :class="[`ui-btn--${variant}`, {
+      'ui-btn--rounded': rounded,
+      'ui-btn--disabled': disabled,
+      'ui-btn--icon': icon
+    }]"
+  >
     <slot />
   </component>
 </template>

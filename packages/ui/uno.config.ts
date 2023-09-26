@@ -23,8 +23,8 @@ export default defineConfig({
         palette: {
           primary: '#379936',
           secondary: '#C91517',
-          background: '#1B1B1B',
-          foreground: '#E4E4E4',
+          background: '#e4e4e4',
+          foreground: '#1B1B1B',
           panel: '#00000033',
           danger: '#CC2C6C',
           warning: '#FCA400',
