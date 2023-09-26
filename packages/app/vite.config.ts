@@ -13,7 +13,12 @@ import layout from 'vite-plugin-vue-layouts';
 
 const UI_ROOT = resolve(fileURLToPath(import.meta.url), '../../ui');
 export default defineConfig({
-  resolve: { 'alias': { '@iforum/ui': resolve(UI_ROOT, 'src') } },
+  resolve: {
+    'alias': {
+      '@iforum/ui': resolve(UI_ROOT, 'src'),
+      '@': resolve(fileURLToPath(import.meta.url), './src'),
+    },
+  },
   plugins: [
     VueMacros({
       plugins: {
