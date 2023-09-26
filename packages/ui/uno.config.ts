@@ -11,7 +11,7 @@ export default defineConfig({
           secondary: '#C91517',
           background: '#1B1B1B',
           foreground: '#E4E4E4',
-          panel: '#FFFFFFE0',
+          panel: '#FFFFFF1F',
           danger: '#CC2C6C',
           warning: '#FCA400',
           info: '#2347FC',

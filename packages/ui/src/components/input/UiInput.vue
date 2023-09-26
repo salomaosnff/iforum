@@ -23,7 +23,10 @@ defineProps({ ...UiInputProps });
       </div>
       <slot name="append" />
     </div>
-    <div class="text-3">
+    <div
+      v-if="!hideMessages"
+      class="text-3"
+    >
       <p
         v-if="error"
         class="ui-input__error fg--danger"
