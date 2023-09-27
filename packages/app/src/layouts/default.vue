@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const search = ref('');
+
+const router = useRouter();
 </script>
 <template>
   <div>
-    <header class="pa-4 sticky top-0 bg--background mb-4 z-10">
+    <header class="theme--dark pa-4 sticky top-0 bg--background mb-4 z-10">
       <div class="container flex mx-auto gap-8 items-center px-4">
         <img src="../assets/iforum.svg">
         <UiTextField
@@ -14,7 +16,10 @@ const search = ref('');
           hide-messages
         />
         <div class="flex-1" />
-        <UiBtn rounded>
+        <UiBtn
+          rounded
+          @click="router.push('/signin')"
+        >
           Entrar
         </UiBtn> 
       </div>

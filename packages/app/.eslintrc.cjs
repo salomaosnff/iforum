@@ -4,11 +4,9 @@ module.exports = {
     'es2021': true,
   },
   'extends': [
-    // '@unocss',
     '@salomaosnff/eslint-config/typescript',
     '@salomaosnff/eslint-config/vue',
     './.eslintrc-auto-import.json',
-
   ],
   'overrides': [
     {

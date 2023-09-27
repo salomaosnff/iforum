@@ -44,7 +44,6 @@ watchEffect(() => {
   if (props.multiple && props.type !== 'text') {
     console.warn('UiTextField: multiple prop is only supported for type="text"');
   }
-  
 });
 
 const emit = defineEmits<{
@@ -70,24 +69,20 @@ const {
 const error = computed(() =>  props.error ?? errorMessage.value);
 const lazyValue =  ref(props.modelValue ?? '');
 
-watchEffect(() => {
+watch(lazyValue, () => {
   if (props.modelModifiers.lazy) {
     return;
   }
   setValue(lazyValue.value);
-
 });
 
 watchEffect(() => {
-  const  newValue = props.modelValue ?? '';
-  value.value = newValue;
-  lazyValue.value = newValue;
+  lazyValue.value = props.modelValue ?? '';
 });
 
 function setValue(newValue: string) {
-  console.log('setValue', newValue);
-  
   value.value = newValue;
+  
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let modelValue: any = newValue;
 

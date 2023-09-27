@@ -23,16 +23,15 @@ export default defineConfig({
         palette: {
           primary: '#379936',
           secondary: '#C91517',
-          background: '#e4e4e4',
+          background: '#F1F1F1',
           foreground: '#1B1B1B',
-          panel: '#00000033',
+          panel: '#00000010',
           danger: '#CC2C6C',
           warning: '#FCA400',
           info: '#2347FC',
           success: '#21AF45',
           'input-bg': '#00000019',
         },
-        
       },
     }, 
   },

@@ -30,7 +30,7 @@ const users = [
 <template>
   <div class="container md:flex mx-auto gap-8 px-4">
     <main>
-      <div class="w-full aspect-ratio-21/9 app-featured mb-2 relative rounded-md overflow-clip">
+      <div class="theme--dark w-full aspect-ratio-21/9 app-featured mb-2 relative rounded-md overflow-clip">
         <img
           src="https://blogibsamericas.com/wp-content/uploads/2023/04/Img-IA-1920-x-1080-1920x960.jpg"
           class="w-full h-full object-cover app-featured__img"

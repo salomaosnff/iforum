@@ -26,6 +26,8 @@
     "vue-tsc": "^1.8.8"
   },
   "dependencies": {
+    "@vee-validate/i18n": "^4.11.7",
+    "@vee-validate/rules": "^4.11.4",
     "@vueuse/core": "^10.3.0",
     "vee-validate": "^4.11.4",
     "vue": "^3.3.4",

@@ -69,6 +69,12 @@ importers:
 
   packages/app:
     dependencies:
+      '@vee-validate/i18n':
+        specifier: ^4.11.7
+        version: 4.11.7
+      '@vee-validate/rules':
+        specifier: ^4.11.4
+        version: 4.11.4(vue@3.3.4)
       '@vueuse/core':
         specifier: ^10.3.0
         version: 10.3.0(vue@3.3.4)
@@ -1665,13 +1671,16 @@ packages:
       - rollup
     dev: true
 
+  /@vee-validate/i18n@4.11.7:
+    resolution: {integrity: sha512-m648JC3fQTbKAr896UOdNbsGzqlf+F5q+7B44xl7Dd9GO9sr/+ELng00cz9sk0RU1dODoEKq4Md1mkywsTxg5w==}
+    dev: false
+
   /@vee-validate/rules@4.11.4(vue@3.3.4):
     resolution: {integrity: sha512-NuRSJP9rVvMPEDdQNDb2N3K7s4TSbP8sGUAbw+vkhA6dknN9CK5hZSY3lQsLuaXzWVnu4+yZONHadFFkIGTZMg==}
     dependencies:
       vee-validate: 4.11.4(vue@3.3.4)
     transitivePeerDependencies:
       - vue
-    dev: true
 
   /@vitejs/plugin-vue-jsx@3.0.1(vite@4.4.5)(vue@3.3.4):
     resolution: {integrity: sha512-+Jb7ggL48FSPS1uhPnJbJwWa9Sr90vQ+d0InW+AhBM22n+cfuYqJZDckBc+W3QSHe1WDvewMZfa4wZOtk5pRgw==}

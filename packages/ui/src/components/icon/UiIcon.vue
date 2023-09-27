@@ -1,14 +1,14 @@
 <script setup lang="ts">
 
-defineProps({
-  name: String
-})
+defineProps({ name: String });
 
 </script>
 
 <template>
-  <i class="ui-icon mdi" :class="`mdi-${name}`"></i>
-
+  <i
+    class="ui-icon mdi"
+    :class="`mdi-${name}`"
+  />
 </template>
 
 <style lang="scss">
