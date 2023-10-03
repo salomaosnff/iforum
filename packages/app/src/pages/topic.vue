@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form } from 'vee-validate';
+import { Form, FormActions, GenericObject } from 'vee-validate';
 
 const commentForm = reactive({
   body: '',
@@ -122,7 +122,7 @@ const topic = ref({
 
 let id = 7;
 
-function addComment() {
+async function addComment(_: GenericObject, { resetForm }: FormActions<Comment>) {
   topic.value.comments.unshift({
     id: id++,
     body: commentForm.body,
@@ -131,10 +131,12 @@ function addComment() {
     replies: [],
   });
 
+  requestAnimationFrame(() => resetForm());
+
   commentForm.body = '';
 }
 
-function replyComment() {
+function replyComment(_: GenericObject, { resetForm }: FormActions<Comment>) {
   const comment = topic.value.comments.find(comment => comment.id === replyForm.value.replyTo);
 
   if (!comment) {
@@ -148,10 +150,14 @@ function replyComment() {
     author: replyForm.value.author,
     replies: [],
   });
+
+  replyForm.value.body = '';
+  replyForm.value.replyTo = null;
+  resetForm();
 }
+
+const sortedComments = computed(() => topic.value.comments.slice().sort((a, b) => b.rate - a.rate));
 </script>
-
-
 
 <template>
   <div class="container md:flex mx-auto px-4 gap-8 items-start">
@@ -192,6 +198,7 @@ function replyComment() {
       <p>{{ topic.body }}</p>
       <footer>
         <Form
+          ref="commentFormEl"
           class="mb-4"
           @submit="addComment"
         >
@@ -201,6 +208,7 @@ function replyComment() {
           <UiTextField
             v-model="commentForm.body"
             placeholder="Digite aqui..."
+            name="body"
             multiple
             rules="required|max:10000"
           />
@@ -211,22 +219,26 @@ function replyComment() {
           </div>
         </Form>
         <div
-          v-for="comment in topic.comments"
+          v-for="comment in sortedComments"
           :key="comment.id"
           class="p-4 bg--panel rounded-md mb-2"
         >
           <div class="flex gap-6 items-start">
-            <AppRate v-model="comment.rate" />
+            <AppRate
+              v-model="comment.rate"
+              class="text-6 min-w-14"
+            />
             <div class="flex-1">
               <p class="mt-0">
                 {{ comment.body }}
               </p>
-              <a
-                href="#"
-                class="text-3"
-                @click.prevent="replyForm.replyTo = comment.id"
-              >Responder</a>
-              <div class="flex gap-4 text-3 justify-end">
+              <div class="flex gap-4 text-3 items-center justify-end">
+                <a
+                  href="#"
+                  class="text-3"
+                  @click.prevent="replyForm.replyTo = comment.id"
+                >Responder</a>
+                <div class="flex-1" />
                 <span class="opacity-75">Publicado a 1h</span>
                 <div class="flex gap-1 items-center">
                   <img
@@ -241,6 +253,7 @@ function replyComment() {
           </div>
           <Form
             v-if="replyForm.replyTo === comment.id"
+            ref="replyCommentEl"
             @submit="replyComment"
           >
             <h3 class="text-6 mt-2 mb-4">
@@ -251,6 +264,7 @@ function replyComment() {
               placeholder="Digite aqui..."
               multiple
               autofocus
+              name="body"
               rules="required|max:10000"
             />
             <div class="text-right">
@@ -259,6 +273,30 @@ function replyComment() {
               </UiBtn>
             </div>
           </Form>
+
+          <div
+            v-for="reply in comment.replies"
+            :key="reply.id"
+            class="flex gap-6 items-start app-reply ml-8"
+          >
+            <AppRate v-model="reply.rate" />
+            <div class="flex-1">
+              <p class="mt-0">
+                {{ reply.body }}
+              </p>
+              <div class="flex gap-4 text-3 items-center justify-end">
+                <span class="opacity-75">Publicado a 1h</span>
+                <div class="flex gap-1 items-center">
+                  <img
+                    :src="reply.author.photo"
+                    :alt="reply.author.name"
+                    class="w-6 h-6 rounded-full object-cover"
+                  >
+                  <span class="opacity-75">{{ reply.author.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </footer>
     </article>
@@ -269,3 +307,23 @@ function replyComment() {
     </aside>
   </div>
 </template>
+
+<style>
+.app-reply {
+  @apply py-2;
+
+  &+& {
+    border-top: 1px solid var(--theme-panel);
+  }
+}
+
+article header {
+  border-bottom: 1px solid var(--theme-panel);
+  @apply pb-4;
+}
+
+article footer {
+  @apply pt-2 mt-8;
+  border-top: 1px solid var(--theme-panel);
+}
+</style>

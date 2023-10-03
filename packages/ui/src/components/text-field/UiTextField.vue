@@ -26,7 +26,11 @@ const props = defineProps({
     default: undefined,
   },
   rules: {
-    type: Array as PropType<RuleExpression<string>>,
+    type: [
+      Array,
+      String,
+      Object,
+    ] as PropType<RuleExpression<string>>,
     default: undefined,
   },
   name: {

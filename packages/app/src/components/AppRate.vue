@@ -25,7 +25,7 @@ const signal = ref(0);
 
 <template>
   <div
-    class="flex flex-col items-center justify-center min-w-10"
+    class="flex flex-col items-center justify-center"
   >
     <button
       class="h-6 flex items-center opacity-30"
