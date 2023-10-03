@@ -37,7 +37,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-
+  rows: {
+    type: Number,
+    default: 4, 
+  },
+  autofocus: Boolean,
 });
 
 watchEffect(() => {
@@ -100,6 +104,14 @@ function onConfirm() {
   setValue(lazyValue.value);
 }
 
+const control = ref<HTMLInputElement>();
+
+watchEffect(() => {
+  if (props.autofocus) {
+    control.value?.focus();
+  }
+});
+
 </script>
 
 <template>
@@ -110,16 +122,23 @@ function onConfirm() {
   >
     <textarea
       v-if="multiple"
+      ref="control"
       v-model="lazyValue"
       class="ui-text-field__textarea"
+      :placeholder="placeholder"
+      :name="name"
+      :rows="rows"
+      :autofocus="autofocus"
     />
     <input
       v-else
+      ref="control"
       v-model="lazyValue"
       class="ui-text-field__control"
       :type="type"
       :placeholder="placeholder"
       :name="name"
+      :autofocus="autofocus"
       @blur="onConfirm"
       @keydown.enter="onConfirm"
     >

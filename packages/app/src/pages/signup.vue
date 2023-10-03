@@ -9,6 +9,9 @@ const form = reactive({
 
 const router = useRouter();
 
+function onSubmit() {
+  router.push('/feed');
+}
 </script>
 <template>
   <div class="container px-4 mx-auto">
@@ -19,7 +22,10 @@ const router = useRouter();
     <h2 class="text-6 text-center mb-4">
       Cadastre-se no iFórum
     </h2>
-    <Form class="pa-4 bg--panel max-w-110 rounded-md mx-auto">
+    <Form
+      class="pa-4 bg--panel max-w-110 rounded-md mx-auto"
+      @submit="onSubmit"
+    >
       <UiTextField
         v-model="form.name"
         label="Nome"

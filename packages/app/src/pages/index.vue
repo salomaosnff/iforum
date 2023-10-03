@@ -61,7 +61,9 @@ const users = [
         </p> 
         
         <UiBtn rounded>
-          Registre-se
+          <RouterLink to="/signup">
+            Registre-se
+          </RouterLink>
         </UiBtn>
       </section>
       <section class="p-4 bg--panel rounded-md mb-2">
@@ -74,7 +76,9 @@ const users = [
         </p>
         
         <UiBtn rounded>
-          Preciso de ajuda
+          <RouterLink to="/signin">
+            Preciso de ajuda
+          </RouterLink>
         </UiBtn>
       </section>
       <section class="p-4 bg--panel rounded-md mb-2">
@@ -87,7 +91,9 @@ const users = [
         </p>
 
         <UiBtn rounded>
-          Ver tópicos
+          <RouterLink to="/signin">
+            Ver tópicos
+          </RouterLink>
         </UiBtn>
       </section>
     </main>

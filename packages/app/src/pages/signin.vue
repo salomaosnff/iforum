@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Form } from 'vee-validate';  
 const router = useRouter();
 </script>
 
@@ -11,16 +12,23 @@ const router = useRouter();
     <h2 class="text-6 text-center mb-4">
       Entre no iFórum
     </h2>
-    <form class="pa-4 bg--panel max-w-110 rounded-md mx-auto">
+    <Form
+      class="pa-4 bg--panel max-w-110 rounded-md mx-auto"
+      @submit="router.push('/feed')"
+    >
       <UiTextField
         label="E-mail"
         class="mb-4"
+        name="email"
+        rules="required|email"
         placeholder="Digite..."
       />
       <UiTextField
         label="Senha"
         class="mb-8"
         type="password"
+        name="password"
+        rules="required"
         placeholder="Digite..."
       />
       <UiBtn
@@ -38,7 +46,7 @@ const router = useRouter();
       >
         Registre-se
       </UiBtn>
-    </form>
+    </Form>
   </div>
 </template>
 
