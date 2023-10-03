@@ -7,7 +7,9 @@ const router = useRouter();
   <div>
     <header class="theme--dark pa-4 sticky top-0 bg--background mb-6 z-10">
       <div class="container flex mx-auto gap-8 items-center px-4">
-        <img src="../assets/iforum.svg">
+        <RouterLink to="/">
+          <img src="../assets/iforum.svg">
+        </RouterLink>
         <UiTextField
           v-model="search"
           placeholder="Pesquisar"
@@ -16,6 +18,18 @@ const router = useRouter();
           hide-messages
         />
         <div class="flex-1" />
+        <!-- Change theme -->
+        <UiBtn
+          icon
+          rounded
+          variant="flat"
+          color="foreground"
+          title="Alterar tema"
+          type="button"
+          @click="toggleDark(!isDark)"
+        >
+          <UiIcon :name="isDark ? 'white-balance-sunny' : 'brightness-2'" />
+        </UiBtn>
         <UiBtn
           rounded
           @click="router.push('/signin')"
