@@ -11,7 +11,7 @@ export interface TopicRepository {
      * Cria um novo tópico no banco de dados
      * @param topic Tópico a ser criado
      */
-    create(topic: TopicEntity): Promise<Result<TopicEntity, any>>;
+    create(topic: TopicEntity): Promise<Result<TopicEntity, Error>>;
 
     /**
      * Busca um tópico pelo seu slug
@@ -31,7 +31,7 @@ export interface TopicRepository {
      */
     findByUserFeed(user: UserEntity): Promise<Paged<TopicEntity>>;
 
-    delete(topic: TopicEntity): Promise<Result<void, any>>;
+    delete(topic: TopicEntity): Promise<Result<void, Error>>;
 
-    update(topic: TopicEntity): Promise<Result<TopicEntity, any>>;
+    update(topic: TopicEntity): Promise<Result<TopicEntity, Error>>;
 }

@@ -1,11 +1,3 @@
-import { UserEntity } from "./core/user/user.entity";
+import { init } from './infra/knex';
 
-const user = UserEntity.of({
-    email: "dfa",
-    name:"df",
-    password:"df",
-    role: null,
-    score: 1
-})
-
-console.log(user);
+init().then(() => console.log('conectou'));
