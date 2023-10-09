@@ -1,3 +1,4 @@
-import { init } from './infra/knex';
+import * as db from './infra/knex';
+import * as api from './infra/fastify';
 
-init().then(() => console.log('conectou'));
+api.init(db.init);

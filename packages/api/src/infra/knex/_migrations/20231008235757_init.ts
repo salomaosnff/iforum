@@ -24,7 +24,6 @@ export async function up(knex: Knex): Promise<void> {
 
       table.integer('score').notNullable()
         .defaultTo(0);
-
     })
     .createTable('topic', table => {
       table.uuid('id').primary().notNullable()

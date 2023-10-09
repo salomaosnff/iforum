@@ -8,19 +8,28 @@ import { TopicEntity } from '@/core/topic/topic.entity';
 import { UserEntity } from '@/core/user/user.entity';
 
 export class InMemoryTopicRepository implements TopicRepository {
-  findById(_id: Id<string>): Promise<Option<TopicEntity>> {
-    throw new Error('Method not implemented.');
-  }
-  findByUserFeed(_user: UserEntity): Promise<Paged<TopicEntity>> {
-    throw new Error('Method not implemented.');
-  }
-  delete(_topic: TopicEntity): Promise<Result<void, Error>> {
-    throw new Error('Method not implemented.');
-  }
-  update(_topic: TopicEntity): Promise<Result<TopicEntity, Error>> {
-    throw new Error('Method not implemented.');
-  }
   db = new Map<string, TopicEntity>();
+
+  async findById(id: Id<string>): Promise<Option<TopicEntity>> {
+    const topic = this.db.get(id.value);
+
+    return topic ? Option.some(topic) : Option.none();
+  }
+  
+  async findByUserFeed(_user: UserEntity): Promise<Paged<TopicEntity>> {
+    throw new Error('Method not implemented.');
+  }
+  
+  async delete(topic: TopicEntity): Promise<Result<void, Error>> {
+    this.db.delete(topic.id.value);
+
+    return Result.ok();
+  }
+  
+  async update(topic: TopicEntity): Promise<Result<TopicEntity, Error>> {
+    this.db.set(topic.id.value, topic);
+    return Result.ok(topic);
+  }
 
   async create(topic: TopicEntity): Promise<Result<TopicEntity, Error>> {
     this.db.set(topic.id.value, topic);

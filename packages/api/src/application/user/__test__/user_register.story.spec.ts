@@ -4,12 +4,14 @@ import { InMemoryUserRepository } from '@/infra/in_memory/user.repository';
 import { ValidationError } from '@/@shared/error/validation.error';
 import { Result } from '@/@shared/result';
 import { InvalidAcademicEmailError } from '@/@shared/vo/academic_email.vo';
+import { BcryptHashAdapter } from '@/infra/bcrypt/hash.adapter';
 
 describe('Cadastro de usuario', () => {
   const repo = new InMemoryUserRepository();
+  const hash = new BcryptHashAdapter();
   
   it('deve cadastrar um usuário com sucesso', () => {
-    expect(new RegisterUserStory(repo).execute({
+    expect(new RegisterUserStory(repo, hash).execute({
       email: 'test@ifce.edu.br',
       name: 'test',
       password: 'test',
@@ -17,13 +19,12 @@ describe('Cadastro de usuario', () => {
       data: expect.objectContaining({      
         email: { value: 'test@ifce.edu.br' },
         name: 'test',
-        password: 'test',
       }),
     }));
   });
 
   it('deve retornar um erro caso o email já esteja cadastrado', () => {
-    expect(new RegisterUserStory(repo).execute({
+    expect(new RegisterUserStory(repo, hash).execute({
       email: 'test@ifce.edu.br',
       name: 'test',
       password: 'test',
@@ -31,7 +32,7 @@ describe('Cadastro de usuario', () => {
   });
 
   it('deve retornar um erro caso formulario esteja vazio', async () => {
-    const result = await new RegisterUserStory(repo).execute({
+    const result = await new RegisterUserStory(repo, hash).execute({
       email: '',
       name: '',
       password: '',
@@ -43,7 +44,7 @@ describe('Cadastro de usuario', () => {
   });
 
   it('deve retornar um erro caso o email não seja do dominio ifce.edu.br', async () => {
-    const result = await new RegisterUserStory(repo).execute({
+    const result = await new RegisterUserStory(repo, hash).execute({
       email: 'enio.karlos.jenio61@gmail.com',
       name: 'Janio Quadros',
       password: 'prestanao',
