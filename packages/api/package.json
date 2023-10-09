@@ -8,12 +8,18 @@
     "build": "tsup src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "migrate:up": "pnpm knex migrate:latest",
+    "migrate:rollback": "pnpm knex migrate:rollback",
+    "migrate:down": "pnpm knex migrate:down",
+    "migrate:make": "pnpm knex migrate:make",
+    "knex": "knex --knexfile src/infra/knex/knexfile.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.5.9",
     "@vitest/coverage-v8": "^0.34.3",
     "ts-node": "^10.9.1",
@@ -23,7 +29,13 @@
     "vitest": "^0.34.3"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
     "fastify": "^4.22.2",
-    "limax": "^4.1.0"
+    "glob": "^10.3.10",
+    "knex": "^3.0.1",
+    "limax": "^4.1.0",
+    "objection": "^3.1.2",
+    "pg": "^8.11.3"
   }
 }
