@@ -1,6 +1,7 @@
 import '../dotenv';
 import fastify from 'fastify';
 import { AsyncFunction } from 'fastify/types/instance';
+import { TopicController } from './topic.controller';
 
 const server = fastify();
 
@@ -30,6 +31,8 @@ export async function init(initFunction?: AsyncFunction) {
       }
     });
   }
+
+  server.register(TopicController);
 
   await server.listen({
     port: Number(process.env.PORT ?? 3000),

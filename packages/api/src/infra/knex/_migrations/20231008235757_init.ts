@@ -16,11 +16,7 @@ export async function up(knex: Knex): Promise<void> {
 
       table.string('email', 320).notNullable();
 
-      table.enum('role', [
-        0,
-        1,
-      ]).notNullable()
-        .defaultTo(0);
+      table.integer('role').notNullable();
 
       table.integer('score').notNullable()
         .defaultTo(0);
@@ -63,7 +59,8 @@ export async function up(knex: Knex): Promise<void> {
         .defaultTo(0);
 
       table.uuid('reply_to').references('id')
-        .inTable('comment').notNullable();
+        .inTable('comment')
+        .nullable();
     });
 }
 

@@ -14,9 +14,9 @@ export class CommentModel extends BaseModel {
   author: UserModel;
   body: string;
   rate: number;
-  replyTo?: string;
-  topicId: string;
-  editedAt?: Date;
+  reply_to?: string;
+  topic_id: string;
+  edited_at?: Date;
 
   toEntity() {
     return CommentEntity.of({
@@ -24,10 +24,10 @@ export class CommentModel extends BaseModel {
       author: this.author.toEntity(),
       body: this.body,
       rate: this.rate,
-      replyTo: this.replyTo ? Option.some(UUID4.of(this.replyTo).unwrap()) 
+      replyTo: this.reply_to ? Option.some(UUID4.of(this.reply_to).unwrap()) 
         : Option.none(),
-      topicId: UUID4.of(this.topicId).unwrap(),
-      editedAt: this.editedAt ? Option.some(this.editedAt) : Option.none(),
+      topicId: UUID4.of(this.topic_id).unwrap(),
+      editedAt: this.edited_at ? Option.some(this.edited_at) : Option.none(),
     }).unwrap();
   }
 

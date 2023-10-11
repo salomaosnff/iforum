@@ -20,6 +20,19 @@ export class TopicModel extends BaseModel {
   tags?: string[];
   edited_at?: Date;
 
+  static get relationMappings() {
+    return {
+      author: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: UserModel,
+        join: {
+          from: 'topic.author_id',
+          to: 'user.id',
+        },
+      }, 
+    };
+  }
+
   toEntity() {
     return TopicEntity.of({
       id: UUID4.of(this.id).unwrap(),
@@ -32,7 +45,7 @@ export class TopicModel extends BaseModel {
       editedAt: this.edited_at ? Option.some(this.edited_at) : Option.none(),
       updatedAt: this.updated_at,
       createdAt: this.created_at,
-    });
+    }).unwrap();
   }
 
   static toPlain(data: Partial<TopicEntity>): Partial<TopicModel> {

@@ -108,6 +108,6 @@ class Fail<E, T = any> extends Result<T, E> {
   }
 
   unwrap(): T {
-    throw new Error('Called unwrap on a Fail result');
+    throw this.error;
   }
 }

@@ -2,7 +2,7 @@ import '../dotenv';
 import * as glob from 'glob';
 import config from './knexfile';
 import Knex from 'knex';
-import { ModelClass, initialize } from 'objection';
+import { Model, ModelClass, initialize } from 'objection';
 import { BaseModel } from './_util/base_model';
 
 const connection = Knex(config);
@@ -37,6 +37,8 @@ export async function init() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     Object.values(require(file)),
   );
+
+  Model.knex(connection);
 
   return initialize(connection, models);
 }

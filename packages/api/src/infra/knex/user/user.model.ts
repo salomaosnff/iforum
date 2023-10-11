@@ -16,7 +16,7 @@ export class UserModel extends BaseModel {
   role: number;
   score: number;
 
-  toEntity() {
+  toEntity() {    
     return UserEntity.of({
       id: UUID4.of(this.id).unwrap(),
       name: this.name,
