@@ -4,6 +4,7 @@ import { UUID4 } from '@/@shared/vo/UUID4.vo';
 import { Option } from '@/@shared/option';
 import { assignDefined } from '../_util/assign_defined';
 import { CommentEntity } from '@/core/comment/comment.entity';
+import { TopicModel } from '../topic/topic.model';
 
 export class CommentModel extends BaseModel {
 
@@ -17,6 +18,27 @@ export class CommentModel extends BaseModel {
   reply_to?: string;
   topic_id: string;
   edited_at?: Date;
+
+  static get relationMappings() {
+    return {
+      author: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: UserModel,
+        join: {
+          from: 'comment.author_id',
+          to: 'user.id',
+        },
+      },
+      topic: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: TopicModel,
+        join: {
+          from: 'comment.topic_id',
+          to: 'topic.id',
+        },
+      },  
+    };
+  }
 
   toEntity() {
     return CommentEntity.of({
@@ -34,11 +56,12 @@ export class CommentModel extends BaseModel {
   static toPlain(data: Partial<CommentEntity>): Partial<CommentModel> {
     return assignDefined({
       id: data.id?.value,
-      author: data.author && UserModel.fromEntity(data.author),
+      author_id: data.author?.id.value,
       rate: data.rate,
+      body: data.body,
       replyTo: data.replyTo && Option.isSome(data.replyTo) ? 
         data.replyTo.unwrap().value : undefined,
-      topicId: data.topicId?.value,
+      topic_id: data.topicId?.value,
       editedAt: data.editedAt && Option.isSome(data.editedAt) ? 
         data.editedAt.unwrap() : undefined,
     });

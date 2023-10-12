@@ -1,6 +1,5 @@
-import { ValidationError } from "@/@shared/error/validation.error";
+import { EntityNotFound } from '@/@shared/error/entity_not_found.error';
 
-export class TopicNotFound extends ValidationError {
-    name = 'TopicNotFound';
-    message = 'Topic Not Found!';
+export class TopicNotFound extends EntityNotFound {
+  entity = 'Topic';
 }

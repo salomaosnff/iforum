@@ -53,6 +53,8 @@ export async function up(knex: Knex): Promise<void> {
       table.uuid('author_id').references('id')
         .inTable('user').notNullable();
 
+      table.uuid('topic_id').references('id').inTable('topic').notNullable();
+
       table.text('body').notNullable();
 
       table.integer('rate').notNullable()

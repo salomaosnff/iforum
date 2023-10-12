@@ -19,7 +19,12 @@ export class RegisterUserStory{
   }
 
   async execute(data: RegisterUserStoryInput): Promise<Result<UserEntity, ValidationError | UserEmailAlreadyRegisteredError | InvalidAcademicEmailError>>{
-    
+    if (!data){
+      return Result.fail(new ValidationError('Missing user info!'));
+    }
+    if (!data.password){
+      return Result.fail(new ValidationError('password is required!'));
+    }
     data.password = await this.hashPort.digest(data.password);
 
     const userResult = AcademicEmail.of(data.email).map((email) => UserEntity.of({

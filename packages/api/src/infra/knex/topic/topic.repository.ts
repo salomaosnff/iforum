@@ -32,7 +32,7 @@ export class KnexTopicRepository implements TopicRepository {
   }
   
   async findById(id: Id<string>): Promise<Option<TopicEntity>> {
-    const topic = await TopicModel.query().where('id', '=', id.value).first();
+    const topic = await TopicModel.query().where('topic.id', '=', id.value).withGraphJoined('author').first();
 
     if (topic) {
       return Option.some(topic.toEntity());

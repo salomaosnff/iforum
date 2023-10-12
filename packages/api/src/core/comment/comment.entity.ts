@@ -26,6 +26,7 @@ export class CommentEntity extends Entity<CommentFields>{
   static of(data: CommentFields) {
     data.replyTo ??= Option.none();
     data.editedAt ??= Option.none();
+    data.rate ??= 0;
     return this.create(new CommentEntity(data));
   }
 
@@ -46,10 +47,10 @@ export class CommentEntity extends Entity<CommentFields>{
     if (typeof this.rate !== 'number' || !Number.isFinite(this.rate)){
       return Result.fail(new ValidationError('rate is required'));
     }
-    if (this.replyTo && this.replyTo instanceof Id){
+    if (this.replyTo && Option.isSome(this.replyTo) && !(this.replyTo.unwrap() instanceof Id)){
       return Result.fail(new ValidationError('replyTo is invalid'));
     }
-    if (this.topicId instanceof Id){
+    if (!(this.topicId instanceof Id)){
       return Result.fail(new ValidationError('topicId is invalid'));
     }
 

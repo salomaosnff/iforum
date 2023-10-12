@@ -51,7 +51,7 @@ export class TopicModel extends BaseModel {
   static toPlain(data: Partial<TopicEntity>): Partial<TopicModel> {
     return assignDefined({
       id: data.id?.value,
-      author: data.author && UserModel.fromEntity(data.author) ,
+      author_id: data.author?.id.value ,
       body: data.body,
       title: data.title,
       rate: data.rate,

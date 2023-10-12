@@ -46,17 +46,18 @@ export class CreateCommentStory {
     }
 
     const userResult = await this.userRepository.findById(userIdResult.unwrap());
-
+    
     if (Option.isNone(userResult)) {
       return Result.fail(new UserNotAuthenticatedError());
     }
-
+    
     const author = userResult.unwrap();
-
+ 
     if (Option.isNone(await this.topicRepository.findById(topicId))) {
       return Result.fail(new TopicNotFound());
     }
 
+    
     const commentResult = CommentEntity.of({
       body: input.body,
       topicId,
@@ -69,7 +70,7 @@ export class CreateCommentStory {
     }
 
     const comment = commentResult.unwrap();
-
+    
     await this.commentRepository.create(comment);
 
     return Result.ok(comment);

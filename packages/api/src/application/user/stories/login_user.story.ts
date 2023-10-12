@@ -18,6 +18,9 @@ export class LoginStory {
   }
 
   async execute(data: LoginStoryInput) {
+    if (!data?.login || !data?.password){
+      return Result.fail(new InvalidUserCredentialsError);
+    }
     const emailResult = AcademicEmail.of(data.login);
 
     if (Result.isFail(emailResult)){

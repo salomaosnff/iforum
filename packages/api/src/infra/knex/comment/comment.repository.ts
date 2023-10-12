@@ -38,7 +38,7 @@ export class KnexCommentRepository implements CommentRepository {
     return Result.ok();
   }
   async findByTopicId(topicId: Id<string>, pageParams: PageParams): Promise<Result<Paged<CommentEntity>, Error>> {
-    const commentsQuery = CommentModel.query().where('topic_id', '=', topicId.value);
+    const commentsQuery = CommentModel.query().where('topic_id', '=', topicId.value).withGraphJoined('author');
 
     const [
       totalItems,
