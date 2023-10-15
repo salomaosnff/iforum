@@ -1,10 +1,10 @@
 import { FastifyPluginCallback } from 'fastify';
-import { KnexUserHashtagsRepository } from '../knex/hashtags/hashtags.repository';
-import { KnexUserRepository } from '../knex/user/user.repository';
 import { FollowHashtagInput, FollowHashtagStory } from '@/application/hashtag/stories/follow_hashtag.story';
-import { getLoggedUserId } from './util';
 import { Result } from '@/@shared/result';
 import { UnFollowHashtagStory } from '@/application/hashtag/stories/unfollow_hashtag.story copy';
+import { KnexUserHashtagsRepository } from '@/infra/knex/hashtags/hashtags.repository';
+import { KnexUserRepository } from '@/infra/knex/user/user.repository';
+import { getLoggedUserId } from '../util';
 
 export const HashtagController: FastifyPluginCallback = async (fastify) => {
   const hashtagRepository = new KnexUserHashtagsRepository();

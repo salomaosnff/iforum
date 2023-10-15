@@ -9,7 +9,9 @@
         "Gruntfuggly.todo-tree",
         "Vue.vscode-typescript-vue-plugin",
         "antfu.unocss",
-        "Vue.volar"
+        "Vue.volar",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-portuguese-brazilian"
     ],
     "unwantedRecommendations": [
         "esbenp.prettier-vscode",

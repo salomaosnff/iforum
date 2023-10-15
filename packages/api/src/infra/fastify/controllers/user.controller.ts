@@ -1,7 +1,7 @@
-import { RegisterUserStory, RegisterUserStoryInput } from './../../application/user/stories/register_user.story';
+import { RegisterUserStory, RegisterUserStoryInput } from '../../../application/user/stories/register_user.story';
 import { FastifyPluginCallback } from 'fastify';
-import { KnexUserRepository } from '../knex/user/user.repository';
-import { BcryptHashAdapter } from '../bcrypt/hash.adapter';
+import { KnexUserRepository } from '../../knex/user/user.repository';
+import { BcryptHashAdapter } from '../../bcrypt/hash.adapter';
 import * as UserPresenter from '@/application/user/user.presenter';
 import { LoginStory, LoginStoryInput } from '@/application/user/stories/login_user.story';
 
@@ -18,9 +18,26 @@ export const UserController: FastifyPluginCallback = async (fastify) => {
     reply.code(201);
     return result.map(UserPresenter.publicPresenter);
   });
+
+
   fastify.post<{
     Body: LoginStoryInput; 
-  }>('/login', async (request,reply) => {
+  }>('/login', {
+    schema: {
+      description: 'Realiza o login do usuário',
+      body: {
+        type: 'object',
+        properties: {
+          login: { type: 'string' },
+          password: { type: 'string' },
+        },
+        required: [
+          'login',
+          'password',
+        ],
+      },
+    },
+  }, async (request,reply) => {
     const login = new LoginStory(userRepository, bcryptHashAdapter);
     const result = await login.execute({
       ...request.body,

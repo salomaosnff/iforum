@@ -20,6 +20,14 @@ export abstract class Option<T> {
     return value instanceof Option;
   }
 
+  static from<T>(value: T | null | undefined): Option<T> {
+    if ((value ?? null) === null) {
+      return Option.none();
+    }
+
+    return Option.some(value as T);
+  }
+
   static none<T>(): Option<T> {
     return _None;
   }
@@ -48,7 +56,7 @@ export abstract class Option<T> {
 
 class Some extends Option<any> {
   constructor(readonly data: any) {
-    super()
+    super();
   }
 
   [util.inspect.custom](depth: any, options: any) {
@@ -64,4 +72,4 @@ const _None = new (class None extends Option<any> {
   unwrap(): any {
     throw new Error('Cannot unwrap None');
   }
-})
+});

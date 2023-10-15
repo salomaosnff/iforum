@@ -1,11 +1,11 @@
 import { FastifyPluginCallback } from 'fastify';
-import { KnexTopicRepository } from '../knex/topic/topic.repository';
 import { FindTopicBySlug } from '@/application/topic/stories/find_topic_by_slug';
 import * as TopicPresenter from '@/application/topic/topic.presenter';
 import { CreateTopicStory, CreateTopicStoryInput } from '@/application/topic/stories/create_topic.story';
-import { KnexUserRepository } from '../knex/user/user.repository';
-import { getLoggedUserId } from './util';
 import { FindTopicsByUserFeed } from '@/application/topic/stories/find_by_user_feed.story';
+import { KnexTopicRepository } from '@/infra/knex/topic/topic.repository';
+import { KnexUserRepository } from '@/infra/knex/user/user.repository';
+import { getLoggedUserId } from '../util';
 
 export const TopicController: FastifyPluginCallback = async (fastify) => {
   const topicRepository = new KnexTopicRepository();

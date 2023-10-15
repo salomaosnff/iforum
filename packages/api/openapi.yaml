@@ -1,0 +1,837 @@
+openapi: 3.1.0
+info:
+  title: IFórum
+  version: 1.0.0
+  description: API do IFórum
+
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+components:
+  schemas:
+    ApplicationError:
+      type: object
+      description: Erro da aplicação
+      required:
+        - error
+        - message
+        - status
+        - info
+      properties:
+        error:
+          type: string
+          description: Nome do erro
+
+        message:
+          type: string
+          description: Mensagem do erro
+
+        status:
+          type: number
+          description: Código HTTP do erro
+
+        info:
+          type: object
+          description: Informações adicionais do erro
+          additionalProperties: true
+
+    User:
+      type: object
+      description: Informações públicas de um usuário
+      required:
+        - id
+        - name
+        - email
+        - role
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do usuário
+
+        name:
+          type: string
+          description: Nome do usuário
+
+        email:
+          type: string
+          format: academic-email
+          description: Email acadêmico do usuário
+
+        role:
+          type: string
+          enum:
+            - 0
+            - 1
+          description: >
+            Tipo de usuário:
+            0 - Aluno
+            1 - Professor
+
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do usuário
+    
+    Topic:
+      type: object
+      description: Tópico de discussão
+      required:
+        - id
+        - title
+        - slug
+        - rate
+        - body
+        - author
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do tópico
+
+        title:
+          type: string
+          description: Título do tópico
+
+        slug:
+          type: string
+          format: slug
+          description: Slug do tópico
+
+        rate:
+          type: number
+          description: Taxa de avaliação do tópico
+
+        body:
+          type: string
+          description: Conteúdo do tópico
+        
+        author:
+          $ref: '#/components/schemas/User'
+          description: Autor do tópico
+
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do tópico
+
+    Comment:
+      type: object
+      description: Comentário de um tópico
+      required:
+        - id
+        - body
+        - rate
+        - author
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID do comentário
+
+        body:
+          type: string
+          description: Conteúdo do comentário
+
+        rate:
+          type: number
+          description: Taxa de avaliação do comentário
+
+        replyTo:
+          type: string
+          format: uuid
+          description: ID do comentário respondido
+
+    PagedTopics:
+      type: object
+      description: Lista de tópicos paginada
+      required:
+        - items
+        - totalItems
+        - totalPages
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Topic'
+          description: Lista de tópicos
+
+        totalItems:
+          type: number
+          description: Total de tópicos
+
+        totalPages:
+          type: number
+          description: Total de páginas
+
+    PagedComments:
+      type: object
+      description: Lista de comentários paginada
+      required:
+        - items
+        - totalItems
+        - totalPages
+      properties:
+        items:
+          type: array
+          description: Lista de comentários
+          items:
+            $ref: '#/components/schemas/Comment'
+
+        totalItems:
+          type: number
+          description: Total de comentários
+
+        totalPages:
+          type: number
+          description: Total de páginas
+
+    PagedTags:
+      type: object
+      description: Lista de tags paginada
+      required:
+        - items
+        - totalItems
+        - totalPages
+      properties:
+        items:
+          type: array
+          description: Lista de tags
+          items:
+            type: string
+
+        totalItems:
+          type: number
+          description: Total de tags
+
+        totalPages:
+          type: number
+          description: Total de páginas
+tags:
+  - name: Auth
+    description: Operações relacionadas a autenticação
+  - name: Users
+    description: Operações relacionadas a usuários
+  - name: Topics
+    description: Operações relacionadas a tópicos
+  - name: Comments
+    description: Operações relacionadas a comentários
+  - name: Tags
+    description: Operações relacionadas a tags
+  
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Autentica um usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login:
+                  type: string
+                  format: academic-email
+                  description: Email acadêmico do usuário
+                password:
+                  type: string
+                  description: Senha do usuário
+      responses:
+        200:
+          description: Usuário autenticado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Falha na autenticação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Cadastra um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  description: Nome do usuário
+                email:
+                  type: string
+                  format: academic-email
+                  description: Email acadêmico do usuário
+                password:
+                  type: string
+                  description: Senha do usuário
+      responses:
+        201:
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        409:
+          description: Não foi possível cadastrar o usuário pois houve conflito com outro usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        
+  /topics:
+    post:
+      tags:
+        - Topics
+      summary: Cadastra um novo tópico
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - body
+                - tags
+              properties:
+                title:
+                  description: Título do tópico
+                  type: string
+                body:
+                  description: Conteúdo do tópico
+                  type: string
+                tags:
+                  description: Lista de tags do tópico
+                  type: array
+                  items:
+                    type: string
+      responses:
+        201:
+          description: Tópico criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        409:
+          description: Não foi possível cadastrar o tópico pois houve conflito com outro tópico
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+
+  /topics/{slug}:
+    get:
+      tags:
+        - Topics
+      summary: Obtém um tópico pelo slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+      responses:
+        200:
+          description: Tópico obtido com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+    patch:
+      tags:
+        - Topics
+      summary: Atualiza um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  description: Título do tópico
+                  type: string
+                body:
+                  description: Conteúdo do tópico
+                  type: string
+                tags:
+                  description: Lista de tags do tópico
+                  type: array
+                  items:
+                    type: string
+
+        responses:
+          200:
+            description: Tópico atualizado com sucesso
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Topic'
+          404:
+            description: Tópico não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApplicationError'
+          401:
+            description: Usuário não autenticado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApplicationError'
+    delete:
+      tags:
+        - Topics
+      summary: Deleta um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+      responses:
+        204:
+          description: Tópico deletado com sucesso
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+
+  /topics/{slug}/comments:
+    get:
+      tags:
+        - Comments
+      summary: Obtém os comentários de um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+        - name: page
+          in: query
+          required: false
+          description: Número da página
+          schema:
+            type: number
+            format: uint32
+            default: 1
+        - name: size
+          in: query
+          required: false
+          description: Quantidade de comentários por página
+          schema:
+            type: number
+            format: uint32
+            default: 20
+      responses:
+        200:
+          description: Comentários obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedComments'
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+    post:
+      tags:
+        - Comments
+      summary: Cadastra um novo comentário em um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - body
+              properties:
+                body:
+                  description: Conteúdo do comentário
+                  type: string
+                replyTo:
+                  description: ID do comentário respondido
+                  type: string
+                  format: uuid
+      responses:
+        201:
+          description: Comentário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+  /topics/{slug}/comments/{id}:
+    patch:
+      tags:
+        - Comments
+      summary: Atualiza um comentário de um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+        - name: id
+          in: path
+          required: true
+          description: ID do comentário
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  description: Conteúdo do comentário
+                  type: string
+      responses:
+        200:
+          description: Comentário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: Comentário ou tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+    delete:
+      tags:
+        - Comments
+      summary: Deleta um comentário de um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+        - name: id
+          in: path
+          required: true
+          description: ID do comentário
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: Comentário deletado com sucesso
+        404:
+          description: Comentário ou tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+
+  /topics/{slug}/rate:
+    post:
+      tags:
+        - Topics
+      summary: Avalia um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rate
+              properties:
+                rate:
+                  description: >
+                    Taxa de avaliação do tópico
+                    1 - Gostei
+                    -1 - Não gostei
+                  type: number
+                  enum:
+                    - '1'
+                    - '-1'
+      responses:
+        200:
+          description: Tópico avaliado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+
+  /topics/{slug}/comments/{id}/rate:
+    post:
+      tags:
+        - Comments
+      summary: Avalia um comentário de um tópico
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          description: Slug do tópico
+          schema:
+            type: string
+            format: slug
+        - name: id
+          in: path
+          required: true
+          description: ID do comentário
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rate
+              properties:
+                rate:
+                  description: >
+                    Taxa de avaliação do comentário
+                    1 - Gostei
+                    -1 - Não gostei
+                  type: number
+                  enum:
+                    - '1'
+                    - '-1'
+      responses:
+        200:
+          description: Comentário avaliado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        404:
+          description: Comentário ou tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+
+  /tags/following:
+    get: 
+      tags:
+        - Tags
+      summary: Obtém as tags seguidas pelo usuário autenticado
+      responses:
+        200:
+          description: Tags obtidas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTags'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+    post:
+      tags:
+        - Tags
+      summary: Segue uma tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tag
+              properties:
+                tag:
+                  description: Nome da tag
+                  type: string
+      responses:
+        200:
+          description: Tag seguida com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - tag
+                properties:
+                  tag:
+                    description: Nome da tag
+                    type: string
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+    delete:
+      tags:
+        - Tags
+      summary: Deixa de seguir uma tag
+      parameters:
+        - name: tag
+          in: query
+          required: true
+          description: Nome da tag
+          schema:
+            type: string
+      responses:
+        204:
+          description: Tag deixada de seguir com sucesso
+        422:
+          description: Falha na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
