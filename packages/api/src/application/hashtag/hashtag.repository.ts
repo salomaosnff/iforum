@@ -1,5 +1,5 @@
-import { Paged } from "@/@shared/paged";
-import { UserEntity } from "@/core/user/user.entity";
+import { Paged } from '@/@shared/paged';
+import { UserEntity } from '@/core/user/user.entity';
 
 export interface HashtagRepository {
   /**
@@ -14,4 +14,11 @@ export interface HashtagRepository {
    * @param user Usuário que irá seguir a hashtag
    */
   follow(hashtag: string, user: UserEntity): Promise<void>
+
+  /**
+   * Deixa de seguir uma hashtag
+   * @param hashtag Hashtag a ser deixada de seguir
+   * @param user Usuário que irá deixar de seguir a hashtag
+   */
+  unfollow(hashtag: string, user: UserEntity): Promise<void>
 }
