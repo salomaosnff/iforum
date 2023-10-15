@@ -29,7 +29,7 @@ export interface TopicRepository {
      * Retorna uma lista de tópicos do feed de um usuário
      * @param user Usuário do feed
      */
-    findByUserFeed(user: UserEntity): Promise<Paged<TopicEntity>>;
+    findByUserFeed(user: UserEntity, page: number, size: number): Promise<Paged<TopicEntity>>;
 
     delete(topic: TopicEntity): Promise<Result<void, Error>>;
 

@@ -15,6 +15,7 @@ export class UserModel extends BaseModel {
   email: string;
   role: number;
   score: number;
+  tags: string[];
 
   toEntity() {    
     return UserEntity.of({

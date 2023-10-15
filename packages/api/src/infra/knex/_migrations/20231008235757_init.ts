@@ -20,6 +20,8 @@ export async function up(knex: Knex): Promise<void> {
 
       table.integer('score').notNullable()
         .defaultTo(0);
+
+      table.specificType('tags', 'TEXT[]').notNullable().defaultTo('{}');
     })
     .createTable('topic', table => {
       table.uuid('id').primary().notNullable()

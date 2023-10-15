@@ -7,6 +7,7 @@ import { ApplicationError } from '@/@shared/error/application.error';
 import { UserController } from './user.controller';
 import fastifyCookie from '@fastify/cookie';
 import { CommentController } from './comment.controller';
+import { HashtagController } from './hashtag.controller';
 
 const server = fastify();
 
@@ -53,6 +54,8 @@ export async function init(initFunction?: AsyncFunction) {
   server.setErrorHandler(async (error, request, reply) => {
     if (!(error instanceof ApplicationError)){
       reply.code(500);
+
+      console.log(error);
       return {
         error: error.name,
         message: error.message,
@@ -67,14 +70,13 @@ export async function init(initFunction?: AsyncFunction) {
       info: error.info,
     };
   });
+
   server.register(TopicController);
   server.register(UserController);
   server.register(CommentController);
+  server.register(HashtagController);
   
-  await server.listen({
-    port: Number(process.env.PORT ?? 3000),
-    host: '0.0.0.0',
-  });
+  await server.listen({ port: Number(process.env.PORT ?? 3000) });
 
   console.log('Server listening on port 3000');
 }

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "pnpm run --filter app dev",
+    "dev": "pnpm run --parallel --filter=app --filter=api dev",
     "ui:dev": "pnpm run --filter ui dev",
     "api:dev": "pnpm run --filter api dev",
     "typecheck": "pnpm run --filter ui typecheck",

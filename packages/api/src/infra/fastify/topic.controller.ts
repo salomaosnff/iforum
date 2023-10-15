@@ -5,6 +5,7 @@ import * as TopicPresenter from '@/application/topic/topic.presenter';
 import { CreateTopicStory, CreateTopicStoryInput } from '@/application/topic/stories/create_topic.story';
 import { KnexUserRepository } from '../knex/user/user.repository';
 import { getLoggedUserId } from './util';
+import { FindTopicsByUserFeed } from '@/application/topic/stories/find_by_user_feed.story';
 
 export const TopicController: FastifyPluginCallback = async (fastify) => {
   const topicRepository = new KnexTopicRepository();
@@ -32,4 +33,28 @@ export const TopicController: FastifyPluginCallback = async (fastify) => {
     return result.map(TopicPresenter.publicPresenter);
   });
 
+  fastify.get<{
+    Querystring: {
+      page: number,
+      size: number
+    }
+  }>('/feed', async (request) => {
+    const {
+      page, size, 
+    } = request.query;
+    const findByUserFeed = new FindTopicsByUserFeed(topicRepository, userRepository);
+
+    const result = await findByUserFeed.execute({
+      page,
+      size,
+      userId: getLoggedUserId(request),
+    });
+
+    return result.map(paged => {
+      return {
+        ...paged,
+        items: paged.items.map(TopicPresenter.publicPresenter),
+      };
+    });
+  });
 };
