@@ -30,7 +30,6 @@ export async function init() {
   const modelfiles: string[] = glob.sync('**/*.model.js', {
     absolute: true,
     cwd: __dirname,
-
   });
 
   const models: ModelClass<BaseModel>[] = modelfiles.flatMap((file) =>

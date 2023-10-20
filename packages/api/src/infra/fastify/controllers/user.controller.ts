@@ -44,7 +44,7 @@ export const UserController: FastifyPluginCallback = async (fastify) => {
       setCookie(name, value) {
         reply.setCookie(name,value,{
           httpOnly: true,
-          maxAge: Number(process.env.COOKIE_MAX_AGE??0),
+          maxAge: Number(process.env.COOKIE_MAX_AGE ?? 0),
           signed: true,
         });
       },

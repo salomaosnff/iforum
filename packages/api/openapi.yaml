@@ -226,6 +226,7 @@ tags:
 paths:
   /login:
     post:
+      operationId: login
       tags:
         - Auth
       summary: Autentica um usuário
@@ -267,6 +268,7 @@ paths:
                 $ref: '#/components/schemas/ApplicationError'
   /users:
     post:
+      operationId: createUser
       tags:
         - Users
       summary: Cadastra um novo usuário
@@ -313,6 +315,7 @@ paths:
         
   /topics:
     post:
+      operationId: createTopic
       tags:
         - Topics
       summary: Cadastra um novo tópico
@@ -366,6 +369,7 @@ paths:
 
   /topics/{slug}:
     get:
+      operationId: getTopicBySlug
       tags:
         - Topics
       summary: Obtém um tópico pelo slug
@@ -391,6 +395,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
     patch:
+      operationId: updateTopicBySlug
       tags:
         - Topics
       summary: Atualiza um tópico
@@ -421,26 +426,27 @@ paths:
                   items:
                     type: string
 
-        responses:
-          200:
-            description: Tópico atualizado com sucesso
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Topic'
-          404:
-            description: Tópico não encontrado
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApplicationError'
-          401:
-            description: Usuário não autenticado
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ApplicationError'
+      responses:
+        200:
+          description: Tópico atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        404:
+          description: Tópico não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationError'
     delete:
+      operationId: deleteTopicBySlug
       tags:
         - Topics
       summary: Deleta um tópico
@@ -470,6 +476,7 @@ paths:
 
   /topics/{slug}/comments:
     get:
+      operationId: getComments
       tags:
         - Comments
       summary: Obtém os comentários de um tópico
@@ -511,6 +518,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
     post:
+      operationId: createComment
       tags:
         - Comments
       summary: Cadastra um novo comentário em um tópico
@@ -565,6 +573,7 @@ paths:
                 $ref: '#/components/schemas/ApplicationError'
   /topics/{slug}/comments/{id}:
     patch:
+      operationId: updateComment
       tags:
         - Comments
       summary: Atualiza um comentário de um tópico
@@ -613,6 +622,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
     delete:
+      operationId: deleteComment
       tags:
         - Comments
       summary: Deleta um comentário de um tópico
@@ -649,6 +659,7 @@ paths:
 
   /topics/{slug}/rate:
     post:
+      operationId: rateTopic
       tags:
         - Topics
       summary: Avalia um tópico
@@ -700,6 +711,7 @@ paths:
 
   /topics/{slug}/comments/{id}/rate:
     post:
+      operationId: rateComment
       tags:
         - Comments
       summary: Avalia um comentário de um tópico
@@ -758,6 +770,7 @@ paths:
 
   /tags/following:
     get: 
+      operationId: getFollowingTags
       tags:
         - Tags
       summary: Obtém as tags seguidas pelo usuário autenticado
@@ -775,6 +788,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
     post:
+      operationId: followTag
       tags:
         - Tags
       summary: Segue uma tag
@@ -816,6 +830,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
     delete:
+      operationId: unfollowTag
       tags:
         - Tags
       summary: Deixa de seguir uma tag
