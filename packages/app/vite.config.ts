@@ -10,8 +10,10 @@ import AutoImport from 'unplugin-auto-import/vite';
 import unocss from 'unocss/vite';
 import pages from 'vite-plugin-pages';
 import layout from 'vite-plugin-vue-layouts';
+import { OpenAPIV3Parser, SwaggerApi } from '@salomaosnff/vite-plugin-api';
 
 const UI_ROOT = resolve(fileURLToPath(import.meta.url), '../../ui');
+
 export default defineConfig({
   resolve: {
     'alias': {
@@ -48,6 +50,15 @@ export default defineConfig({
     unocss(),
     pages(),
     layout(),
+    SwaggerApi({
+      iforum: {
+        source: 'http://localhost:3000/docs/json',
+        parser: new OpenAPIV3Parser({
+          apiBaseUrl: 'http://localhost:3000',
+          swaggerBaseUrl: 'http://localhost:3000/docs',
+        }),
+      },
+    }),
   ],
 
 });

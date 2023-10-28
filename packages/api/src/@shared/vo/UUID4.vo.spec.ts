@@ -8,7 +8,7 @@ describe('UUID4', () => {
   });
 
   it('Deve lançar uma exceção ao passar um UUID inválido', () => {
-    expect(() => UUID4.of('invalid UUID').unwrap()).throws('UUID invalido');
+    expect(() => UUID4.of('invalid UUID').unwrap()).throws('Invalid UUID4');
   });
 
   it('Deve gerar um UUID válido', () => {

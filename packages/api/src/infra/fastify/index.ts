@@ -6,7 +6,7 @@ import setupInit from './setup/init';
 import { setupFastify } from './setup';
 
 export async function init(initFunction?: AsyncFunction) {
-  const fastify = Fastify();
+  const fastify = Fastify({ ignoreTrailingSlash: true });
 
   setupInit(fastify, initFunction);
   setupFastify(fastify);
