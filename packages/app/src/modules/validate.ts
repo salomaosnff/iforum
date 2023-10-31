@@ -1,4 +1,4 @@
-import rules from '@vee-validate/rules';
+import * as rules from '@vee-validate/rules';
 import { localize } from '@vee-validate/i18n';
 import { defineRule, configure } from 'vee-validate';
 

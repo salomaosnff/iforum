@@ -4,11 +4,20 @@ import { KnexUserRepository } from '../../knex/user/user.repository';
 import { BcryptHashAdapter } from '../../bcrypt/hash.adapter';
 import * as UserPresenter from '@/application/user/user.presenter';
 import { LoginStory, LoginStoryInput } from '@/application/user/stories/login_user.story';
+import { GetMeStory } from '@/application/user/stories/get_me.story';
+import { getLoggedUserId } from '../util';
 
 export const UserController: FastifyPluginCallback = async (fastify) => {
   const userRepository = new KnexUserRepository();
   const bcryptHashAdapter = new BcryptHashAdapter();
 
+  fastify.get('/me',async (request, reply) => {
+    const getMe = new GetMeStory(userRepository);
+    const result = await getMe.execute({ userId: getLoggedUserId(request) },
+    );
+    reply.code(200);
+    return result.map(UserPresenter.publicPresenter);
+  });
   fastify.post<{
     Body: RegisterUserStoryInput;
   }>('/users', async (request, reply) => {
