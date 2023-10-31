@@ -1,6 +1,21 @@
 <script setup lang="ts">
-import { Form } from 'vee-validate';  
+import { useAuthContainer } from '@/container/auth/auth';
+import { UserLoginStory } from '@/core/domain/user/stories/user_login.story';
+import { Form } from 'vee-validate';
+
 const router = useRouter();
+
+const [userLogin] = useAuthContainer(UserLoginStory);
+
+const form = ref({
+  login: '',
+  password: '',
+});
+
+async function onSubmit(){
+  const user = await userLogin.execute(form.value);
+  console.log(user);
+}
 </script>
 
 <template>
@@ -14,9 +29,10 @@ const router = useRouter();
     </h2>
     <Form
       class="pa-4 bg--panel max-w-110 rounded-md mx-auto"
-      @submit="router.push('/feed')"
+      @submit="onSubmit"
     >
       <UiTextField
+        v-model="form.login"
         label="E-mail"
         class="mb-4"
         name="email"
@@ -24,6 +40,7 @@ const router = useRouter();
         placeholder="Digite..."
       />
       <UiTextField
+        v-model="form.password"
         label="Senha"
         class="mb-8"
         type="password"

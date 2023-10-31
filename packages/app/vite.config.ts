@@ -18,7 +18,7 @@ export default defineConfig({
   resolve: {
     'alias': {
       '@iforum/ui': resolve(UI_ROOT, 'src'),
-      '@': resolve(fileURLToPath(import.meta.url), './src'),
+      '@': resolve(fileURLToPath(import.meta.url), '../src'),
     },
   },
   plugins: [
