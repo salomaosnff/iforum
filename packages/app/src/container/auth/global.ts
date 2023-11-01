@@ -1,4 +1,4 @@
-import { createResolver, type Token } from '@injets/functional/dist/index.mjs';
+import { createResolver, type Token } from '@injets/functional';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const HTTP_REQUEST: Token<any> = Symbol('HTTP_REQUEST');
@@ -17,7 +17,7 @@ export const useGlobalContainer = createResolver('Global', ({
     return {
       status: response.status,
       headers: response.headers,
-      body: await response.json(),
+      data: await response.json(),
     };
   }, true);
 });

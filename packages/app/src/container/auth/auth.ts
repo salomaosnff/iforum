@@ -1,4 +1,4 @@
-import { createResolver } from '@injets/functional/dist/index.mjs';
+import { createResolver } from '@injets/functional';
 import { Services } from 'swagger:iforum';
 import { HTTP_REQUEST } from './global';
 import { UserLoginStory } from '@/core/domain/user/stories/user_login.story';
