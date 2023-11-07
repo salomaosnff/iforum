@@ -10,6 +10,8 @@ import { getLoggedUserId } from '../util';
 export const UserController: FastifyPluginCallback = async (fastify) => {
   const userRepository = new KnexUserRepository();
   const bcryptHashAdapter = new BcryptHashAdapter();
+  const loginStory = new LoginStory(userRepository, bcryptHashAdapter);
+
 
   fastify.get('/me',async (request, reply) => {
     const getMe = new GetMeStory(userRepository);
@@ -21,10 +23,20 @@ export const UserController: FastifyPluginCallback = async (fastify) => {
   fastify.post<{
     Body: RegisterUserStoryInput;
   }>('/users', async (request, reply) => {
-    const registerUser = new RegisterUserStory(userRepository, bcryptHashAdapter);
-    const result = await registerUser.execute(request.body);
+    const registerUser = new RegisterUserStory(userRepository, bcryptHashAdapter, loginStory);
+    const result = await registerUser.execute({
+      ...request.body,
+      setCookie(name, value) {
+        reply.setCookie(name,value,{
+          httpOnly: true,
+          maxAge: Number(process.env.COOKIE_MAX_AGE ?? 0),
+          signed: true,
+        });
+      },
+    });
     
     reply.code(201);
+
     return result.map(UserPresenter.publicPresenter);
   });
 
@@ -47,8 +59,7 @@ export const UserController: FastifyPluginCallback = async (fastify) => {
       },
     },
   }, async (request,reply) => {
-    const login = new LoginStory(userRepository, bcryptHashAdapter);
-    const result = await login.execute({
+    const result = await loginStory.execute({
       ...request.body,
       setCookie(name, value) {
         reply.setCookie(name,value,{

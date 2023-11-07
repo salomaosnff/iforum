@@ -6,15 +6,18 @@ import { Option } from '@/@shared/option';
 import { UserEmailAlreadyRegisteredError } from '../error/user_email_already_registered.error';
 import { AcademicEmail, InvalidAcademicEmailError } from '@/@shared/vo/academic_email.vo';
 import { HashPort } from '@/@shared/ports/hash.port';
+import { LoginStory } from './login_user.story';
 
 export interface RegisterUserStoryInput{
   name: string;
   password: string;
   email: string;
+  setCookie(name: string, value: string): void
 }
 export class RegisterUserStory{
   constructor(private readonly userRepository: UserRepository,
-    private readonly hashPort: HashPort){
+    private readonly hashPort: HashPort,
+    private readonly userLoginStory: LoginStory){
 
   }
 
@@ -45,7 +48,11 @@ export class RegisterUserStory{
 
     await this.userRepository.create(user);
     
-    return Result.ok(user);
+    return this.userLoginStory.execute({
+      login: user.email.value,
+      password: user.password,
+      setCookie: data.setCookie,
+    });
   }
 }
 

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { Form } from 'vee-validate';
+import { UserRegisterStory } from '@/core/domain/user/stories/user_register.story';
+import { useUserContainer } from '@/container/user';
 
-const form = reactive({
+const [userRegister] = useUserContainer(UserRegisterStory);
+
+const form = ref({
   name: '',
   email: '',
   password: '',
@@ -9,7 +13,8 @@ const form = reactive({
 
 const router = useRouter();
 
-function onSubmit() {
+async function onSubmit() {
+  await userRegister.execute(form.value);
   router.push('/feed');
 }
 </script>

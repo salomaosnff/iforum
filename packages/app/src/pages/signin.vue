@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthContainer } from '@/container/auth/auth';
+import { useAuthContainer } from '@/container/auth.js';
 import { UserLoginStory } from '@/core/domain/user/stories/user_login.story';
 import { Form } from 'vee-validate';
 
@@ -13,8 +13,8 @@ const form = ref({
 });
 
 async function onSubmit(){
-  const user = await userLogin.execute(form.value);
-  console.log(user);
+  await userLogin.execute(form.value);
+  router.push('/feed');
 }
 </script>
 
