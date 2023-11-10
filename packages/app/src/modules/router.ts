@@ -1,7 +1,9 @@
 import { AppModule } from './types/module';
-import { Router, createRouter, createWebHistory } from 'vue-router';
-import routes from 'virtual:generated-pages';
+import { Router } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
+import { routes } from 'vue-router/auto/routes';
+
 
 declare module './types/module' {
   export interface AppContext {

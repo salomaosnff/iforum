@@ -109,6 +109,12 @@ components:
           type: string
           description: Conteúdo do tópico
         
+        tags:
+          type: array
+          items:
+            type: string
+          description: Lista de Tags do Tópico
+
         author:
           $ref: '#/components/schemas/User'
           description: Autor do tópico
@@ -140,6 +146,10 @@ components:
         rate:
           type: number
           description: Taxa de avaliação do comentário
+
+        author:
+          $ref: '#/components/schemas/User'
+          description: Autor do comentário
 
         replyTo:
           type: string

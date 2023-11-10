@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Form } from 'vee-validate';
+import { useTopicContainer } from '@/container/topic';
+import { CreateTopicStory } from '@/core/domain/topic/stories/create_topic.story';
+
 const tags = [
   'Ciência da computação',
   'Inteligência Artificial',
@@ -33,16 +36,35 @@ const users = [
   },
 ];
 
+const router = useRouter();
+
+const [createTopic] = useTopicContainer(CreateTopicStory);
+
 const form = reactive({
   title: '',
-  body: '', 
+  body: '',
+  tags: '',
 });
+
+
+async function onSubmit(){
+  const topic = await createTopic.execute({
+    ...form,
+    tags: form.tags.split(/[\s,;]+/g).map(tag => tag.trim()).filter(tag => tag),
+  });
+  await router.push({
+    name: '/topics/[topic]',
+    params: { topic: topic.slug??'' },
+  });
+}
 </script>
 
 <template>
   <div class="container md:flex mx-auto gap-8 px-4">
     <main class="flex-1">
-      <Form>
+      <Form
+        @submit="onSubmit"
+      >
         <h3 class="text-4 font-bold mt-2 mb-4">
           Novo Tópico
         </h3>
@@ -59,10 +81,18 @@ const form = reactive({
           multiple
           rules="required|max:10000"
         />
+        <UiTextField
+          v-model="form.tags"
+          class="mb-4"
+          placeholder="Tags"
+          multiple
+          rules="required|max:100"
+        />
         <div class="text-right">
           <UiBtn
             class="mb-4"
             rounded
+            type="submit"
           >
             Publicar
           </UiBtn>

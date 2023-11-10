@@ -12,7 +12,10 @@ export async function init(initFunction?: AsyncFunction) {
   setupFastify(fastify);
   setupControllers(fastify);
 
-  await fastify.listen({ port: Number(process.env.PORT ?? 3000) });
+  await fastify.listen({
+    port: Number(process.env.PORT ?? 3000),
+    host: '0.0.0.0', 
+  });
 
   console.log('Server listening on port 3000');
 }

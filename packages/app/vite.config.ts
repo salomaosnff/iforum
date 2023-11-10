@@ -8,7 +8,7 @@ import VueMacros from 'unplugin-vue-macros/vite';
 import Components from 'unplugin-vue-components/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import unocss from 'unocss/vite';
-import pages from 'vite-plugin-pages';
+import pages from 'unplugin-vue-router/vite';
 import layout from 'vite-plugin-vue-layouts';
 import { OpenAPIV3Parser, SwaggerApi } from '@salomaosnff/vite-plugin-api';
 
@@ -48,7 +48,7 @@ export default defineConfig({
 
     }),
     unocss(),
-    pages(),
+    pages({ dts: 'src/router.d.ts' }),
     layout(),
     SwaggerApi({
       iforum: {
