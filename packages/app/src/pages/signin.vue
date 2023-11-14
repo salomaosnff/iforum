@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useAuthContainer } from '@/container/auth.js';
-import { UserLoginStory } from '@/core/domain/user/stories/user_login.story';
+import { useUserStore } from '@/store/user';
 import { Form } from 'vee-validate';
 
 const router = useRouter();
 
-const [userLogin] = useAuthContainer(UserLoginStory);
+const userStore = useUserStore();
 
 const form = ref({
   login: '',
@@ -13,7 +12,7 @@ const form = ref({
 });
 
 async function onSubmit(){
-  await userLogin.execute(form.value);
+  await userStore.login(form.value.login, form.value.password);
   router.push('/feed');
 }
 </script>
