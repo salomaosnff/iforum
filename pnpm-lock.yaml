@@ -134,8 +134,8 @@ importers:
         version: 4.2.5(vue@3.3.7)
     devDependencies:
       '@salomaosnff/vite-plugin-api':
-        specifier: ^1.0.8
-        version: 1.0.8(vite@4.5.0)
+        specifier: ^1.0.9
+        version: 1.0.9(vite@4.5.0)
       '@unocss/reset':
         specifier: ^0.55.7
         version: 0.55.7
@@ -1566,8 +1566,8 @@ packages:
       rollup: 3.29.4
     dev: true
 
-  /@salomaosnff/vite-plugin-api@1.0.8(vite@4.5.0):
-    resolution: {integrity: sha512-D2asnaY+rxOzs7RV8kwncAIppeYppO+GU+jJOBSQV6+Xbe0AvnmAetkWrd3Hn+NGaTwbXxbvbx4M0aOOpGd28w==}
+  /@salomaosnff/vite-plugin-api@1.0.9(vite@4.5.0):
+    resolution: {integrity: sha512-yB6JlI2aS4GTkuZUjSaiXr64O9ajnAFnsAxl5hN578Zryw3ClyI2VH1C7QOj96Vn1EVg8g6T/cMf3XhVQj9gTQ==}
     peerDependencies:
       vite: ^4.4.9
     dependencies:

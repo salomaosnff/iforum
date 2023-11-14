@@ -2,13 +2,9 @@
 import { Form } from 'vee-validate';
 import { useTopicContainer } from '@/container/topic';
 import { CreateTopicStory } from '@/core/domain/topic/stories/create_topic.story';
+import { GetFeedUseCase } from '@/core/domain/topic/stories/get_feed.story';
+import { Models } from 'swagger:iforum';
 
-const tags = [
-  'Ciência da computação',
-  'Inteligência Artificial',
-  'Estrutura de dados',
-  'Computação gráfica',
-];
 const users = [
   {
     id: 'salomaosnff',
@@ -38,7 +34,10 @@ const users = [
 
 const router = useRouter();
 
-const [createTopic] = useTopicContainer(CreateTopicStory);
+const [
+  createTopic,
+  getFeed,
+] = useTopicContainer(CreateTopicStory, GetFeedUseCase);
 
 const form = reactive({
   title: '',
@@ -47,24 +46,30 @@ const form = reactive({
 });
 
 
-async function onSubmit(){
+async function onSubmit() {
   const topic = await createTopic.execute({
     ...form,
     tags: form.tags.split(/[\s,;]+/g).map(tag => tag.trim()).filter(tag => tag),
   });
+
   await router.push({
     name: '/topics/[topic]',
-    params: { topic: topic.slug??'' },
+    params: { topic: topic.slug ?? '' },
   });
 }
+
+const feed = ref<Models.Topic[]>([]);
+
+getFeed.execute().then((topics) => {
+  feed.value = topics.items ?? [];
+});
+
 </script>
 
 <template>
   <div class="container md:flex mx-auto gap-8 px-4">
     <main class="flex-1">
-      <Form
-        @submit="onSubmit"
-      >
+      <Form @submit="onSubmit">
         <h3 class="text-4 font-bold mt-2 mb-4">
           Novo Tópico
         </h3>
@@ -101,9 +106,12 @@ async function onSubmit(){
       <h3 class="text-4 font-bold mt-2 mb-4">
         Tópicos Recentes
       </h3>
+      <p v-if="!feed.length">
+        Não há topicos a serem listados
+      </p>
       <article
-        v-for="i in 10"
-        :key="i"
+        v-for="topic in feed"
+        :key="topic.id"
         class="p-4 bg--panel rounded-md mb-2"
       >
         <header class="flex gap-8">
@@ -114,7 +122,7 @@ async function onSubmit(){
                 name="menu-up"
               />
             </button>
-            <span class="text-6 font-bold">123</span>
+            <span class="text-6 font-bold">{{ topic.rate }}</span>
             <button class="h-6 flex items-center opacity-30">
               <UiIcon
                 class="text-10"
@@ -124,13 +132,13 @@ async function onSubmit(){
           </div>
           <div class="flex-1">
             <h1 class="mt-2 font-bold">
-              <RouterLink to="/topic">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+              <RouterLink :to="{ name: '/topics/[topic]', params: { topic: topic.slug } }">
+                {{ topic.title }}
               </RouterLink>
             </h1>
             <div class="flex flex-wrap gap-2 mt-2 w-full">
               <UiTag
-                v-for="tag in tags"
+                v-for="tag in topic.tags"
                 :key="tag"
                 class="text-3"
               >
@@ -140,7 +148,7 @@ async function onSubmit(){
             <div class="flex gap-4 text-3 opacity-75 justify-end">
               <span>123 comentários</span>
               <span>Publicado a 1h</span>
-              <span>Ênio Carlos</span>
+              <span>{{ topic.author?.name }}</span>
             </div>
           </div>
         </header>
@@ -178,6 +186,7 @@ async function onSubmit(){
 <style lang="scss">
 .app-featured {
   background: black;
+
   &__img {
     --mask: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
     mask-image: var(--mask);

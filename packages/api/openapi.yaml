@@ -340,8 +340,43 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ApplicationError'   
+  /feed:
+    get:
+      operationId: getFeed
+      tags:
+        - Topics
+      summary: Obtém a lista de tópicos do feed do usuário
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Número da página
+          schema:
+            type: number
+            format: uint32
+            default: 1
+        - name: size
+          in: query
+          required: false
+          description: Quantidade de tópicos por página
+          schema:
+            type: number
+            format: uint32
+            default: 20
+      responses:
+        200:
+          description: Tópicos obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTopics'
+        401:
+          description: Usuário não autenticado
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/ApplicationError'
-        
   /topics:
     post:
       operationId: createTopic
@@ -395,7 +430,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
-
   /topics/{slug}:
     get:
       operationId: getTopicBySlug
@@ -502,7 +536,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
-
   /topics/{slug}/comments:
     get:
       operationId: getComments
@@ -685,7 +718,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
-
   /topics/{slug}/rate:
     post:
       operationId: rateTopic
@@ -737,7 +769,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
-
   /topics/{slug}/comments/{id}/rate:
     post:
       operationId: rateComment
@@ -796,7 +827,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApplicationError'
-
   /tags/following:
     get: 
       operationId: getFollowingTags
