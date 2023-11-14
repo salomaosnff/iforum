@@ -3,6 +3,7 @@ import { useUserStore } from '@/store/user';
 import { Form } from 'vee-validate';
 
 const router = useRouter();
+const route = useRoute();
 
 const userStore = useUserStore();
 
@@ -13,8 +14,14 @@ const form = ref({
 
 async function onSubmit(){
   await userStore.login(form.value.login, form.value.password);
-  router.push('/feed');
+  
 }
+
+watchEffect(() => {
+  if (userStore.user){
+    router.push(route.query.redirect as string ?? '/feed');
+  }
+});
 </script>
 
 <template>
@@ -69,7 +76,8 @@ async function onSubmit(){
 <route>
   {
     meta: {
-      layout: 'blank'
+      layout: 'blank',
+      public: true
     }
   }
 </route>

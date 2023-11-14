@@ -2,8 +2,11 @@
 import { Form } from 'vee-validate';
 import { UserRegisterStory } from '@/core/domain/user/stories/user_register.story';
 import { useUserContainer } from '@/container/user';
+import { useUserStore } from '@/store/user';
 
 const [userRegister] = useUserContainer(UserRegisterStory);
+
+const userStore = useUserStore();
 
 const form = ref({
   name: '',
@@ -14,9 +17,14 @@ const form = ref({
 const router = useRouter();
 
 async function onSubmit() {
-  await userRegister.execute(form.value);
-  router.push('/feed');
+  userStore.user = await userRegister.execute(form.value);
 }
+
+watchEffect(() => {
+  if (userStore.user) {
+    router.push('/feed');
+  }
+});
 </script>
 <template>
   <div class="container px-4 mx-auto">
@@ -81,7 +89,8 @@ async function onSubmit() {
 <route>
   {
     meta: {
-      layout: 'blank'
+      layout: 'blank',
+      public: true
     }
   }
 </route>

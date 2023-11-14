@@ -6,4 +6,6 @@ export class FindTopicBySlug {
   async execute(slug: string){
     return this.topicService.getTopicBySlug({ slug }).then(res => res.data as Models.Topic);
   }
+
+  
 }

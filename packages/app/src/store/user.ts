@@ -14,10 +14,17 @@ export const useUserStore = defineStore('user', () => {
     });
   }
 
-  login();
+  async function isLogged(){
+    if (!user.value){
+      await login();
+    }
+
+    return user.value?.id !== undefined;
+  }
 
   return {
     user,
     login, 
+    isLogged,
   };
 });

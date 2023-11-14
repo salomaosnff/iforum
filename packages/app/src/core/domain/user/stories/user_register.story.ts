@@ -1,4 +1,4 @@
-import { Services } from 'swagger:iforum';
+import { Models, Services } from 'swagger:iforum';
 
 export interface UserRegisterInput{
   name: string,
@@ -14,6 +14,6 @@ export class UserRegisterStory {
       name: input.name,
       email: input.email,
       password: input.password,
-    }).then((response) => response.data);
+    }).then((response) => response.data as Models.User);
   }
 }

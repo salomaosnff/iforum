@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store/user';
+import { RouterLink } from 'vue-router/auto';
 
 const search = ref('');
 
 const router = useRouter();
 
-useUserStore();
+const userStore = useUserStore();
 </script>
 <template>
   <div>
@@ -24,6 +25,7 @@ useUserStore();
         <div class="flex-1" />
         <!-- Change theme -->
         <UiBtn
+        
           icon
           rounded
           variant="flat"
@@ -34,11 +36,18 @@ useUserStore();
         >
           <UiIcon :name="isDark ? 'white-balance-sunny' : 'brightness-2'" />
         </UiBtn>
+        <RouterLink
+          v-if="userStore.user"
+          to="/feed"
+        >
+          {{ userStore.user.name }}
+        </RouterLink>
         <UiBtn
+          v-else
           rounded
           @click="router.push('/signin')"
         >
-          Entrar
+          <a href="">Entrar</a>
         </UiBtn> 
       </div>
     </header>
