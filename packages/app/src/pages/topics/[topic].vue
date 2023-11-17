@@ -26,18 +26,14 @@ const replyForm = ref({
 
 const topic = ref({
   id: '',
-  title: 'Angular e Outros Frameworks Front-End: Experiências e Perspectivas',
-  rate: -321,
-  printed: 13658,
-  tags: [
-    'Angular',
-    'Desenvolvimento web',
-    'Front-end',
-  ],
-  body: 'Olá comunidade! Tenho usado o Angular em meus projetos web front-end e estou realmente impressionado com os benefícios que ele oferece. A estrutura robusta, o suporte extenso da comunidade e as ferramentas de desenvolvimento são incomparáveis. Além disso, o Angular fornece uma arquitetura escalável que facilita a manutenção de projetos complexos. Quem mais aqui é fã do Angular?',
+  title: '',
+  rate: 0,
+  printed: 0,
+  tags: [],
+  body: '',
   author: {
-    name: 'AngularFanatic',
-    photo: 'https://www.jornalopcao.com.br/wp-content/uploads/2014/06/100_9002.jpg',
+    name: '',
+    photo: '',
   },
   comments: [],
   slug: '',
