@@ -8,7 +8,6 @@ import { Form, FormActions, GenericObject } from 'vee-validate';
 import { useCommentContainer } from '@/container/comment';
 
 const [
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   createComment,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getComments,
@@ -25,13 +24,9 @@ const commentForm = reactive({
 const route = useRoute('/topics/[topic]');
 const [findTopicBySlug] = useTopicContainer(FindTopicBySlug);
 
-const replyForm = ref({
+const replyForm = reactive({
   body: '',
   replyTo: null as string | null | undefined,
-  author: {
-    name: 'Dev2009',
-    photo: 'https://w7.pngwing.com/pngs/1004/13/png-transparent-jquery-hd-logo.png',
-  },
 });
 
 const topic = ref({
@@ -50,18 +45,12 @@ const topic = ref({
   createdAt: '',
 } as Models.Topic);
 
-async function addComment(_: GenericObject, { resetForm }: FormActions<Comment>) {
-  // topic.value.comments.unshift({
-  //   id: id++,
-  //   body: commentForm.body,
-  //   rate: 0,
-  //   author: commentForm.author,
-  //   replies: [],
-  // });
+async function addComment(){
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const comment = await createComment.execute(route.params.topic, { body: commentForm.body });
 
-  requestAnimationFrame(() => resetForm());
-
-  commentForm.body = '';
+  // TODO: Atualizar lista de comentários
+  window.location.reload();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

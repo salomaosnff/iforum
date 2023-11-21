@@ -2,7 +2,7 @@ import { Models, Services } from 'swagger:iforum';
 
 export interface createCommentInput {
   body: string,
-  replyTo: string
+  replyTo?: string
 }
 
 export class CreateCommentStory {
