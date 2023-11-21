@@ -1,7 +1,7 @@
 import { Models, Services } from 'swagger:iforum'; 
 
 export interface CreateTopicInput{
-  title: string,
+  title: string, 
   body: string,
   tags: string[]
 }

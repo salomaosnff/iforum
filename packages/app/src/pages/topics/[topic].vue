@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { useTopicContainer } from '@/container/topic';
 import { FindTopicBySlug } from '@/core/domain/topic/stories/find_topic_by_slug.story';
+import { CreateCommentStory } from '@/core/domain/comments/stories/create_comment.stories';
+import { GetCommentsUseCase } from '@/core/domain/comments/stories/get_comment.story';
 import { Models } from 'swagger:iforum';
 import { Form, FormActions, GenericObject } from 'vee-validate';
+import { useCommentContainer } from '@/container/comment';
+
+const [
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  createComment,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getComments,
+] = useCommentContainer(CreateCommentStory, GetCommentsUseCase);
 
 const commentForm = reactive({
   body: '',
