@@ -28,10 +28,12 @@ export class RegisterUserStory{
     if (!data.password){
       return Result.fail(new ValidationError('password is required!'));
     }
-    data.password = await this.hashPort.digest(data.password);
+    
+    const password = await this.hashPort.digest(data.password);
 
     const userResult = AcademicEmail.of(data.email).map((email) => UserEntity.of({
       ...data,
+      password,
       email,
     }));
 
@@ -49,8 +51,8 @@ export class RegisterUserStory{
     await this.userRepository.create(user);
     
     return this.userLoginStory.execute({
-      login: user.email.value,
-      password: user.password,
+      login: data.email,
+      password: data.password,
       setCookie: data.setCookie,
     });
   }

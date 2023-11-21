@@ -17,5 +17,7 @@
     ],
     "scss.lint.unknownAtRules": "ignore",
     "css.lint.unknownAtRules": "ignore",
-    "typescript.preferences.autoImportFileExcludePatterns": ["vue-router"]
+    "typescript.preferences.autoImportFileExcludePatterns": [
+        "vue-router"
+    ]
 }
