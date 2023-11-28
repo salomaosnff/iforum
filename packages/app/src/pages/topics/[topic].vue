@@ -45,12 +45,13 @@ const topic = ref({
   createdAt: '',
 } as Models.Topic);
 
-async function addComment(){
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Comment>){
   const comment = await createComment.execute(route.params.topic, { body: commentForm.body });
 
-  // TODO: Atualizar lista de comentários
-  window.location.reload();
+  comments.value?.items?.unshift(comment);
+
+  commentForm.body = '';
+  setTimeout(() => setErrors({ body: '' }), 1);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -74,13 +75,17 @@ function replyComment(_: GenericObject, { resetForm }: FormActions<Comment>) {
   // resetForm();
 }
 
-// const sortedComments = computed(() => topic.value.comments.slice().sort((a, b) => b.rate - a.rate));
 
-
-const sortedComments: Models.Comment[] = [];
+const sortedComments = computed(() => comments.value?.items?.slice()?.sort((a, b) => (b.rate ?? 0) - (a.rate ?? 0)));
 
 watch(() => route.params.topic, async (slug) => {
   topic.value = await findTopicBySlug.execute(slug);
+},{ immediate: true });
+
+const comments = ref<Models.PagedComments>();
+
+watch(() => route.params.topic, async (slug) => {
+  comments.value = await getComments.execute(slug);
 },{ immediate: true });
 </script>
 
@@ -225,11 +230,6 @@ watch(() => route.params.topic, async (slug) => {
         </div>
       </footer>
     </article>
-    <aside class="w-70">
-      <h2 class="text-6 font-title mb-2">
-        Tópicos relacionados
-      </h2>
-    </aside>
   </div>
 </template>
 

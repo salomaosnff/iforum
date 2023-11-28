@@ -13,13 +13,13 @@ export const CommentController: FastifyPluginCallback = async (fastify) => {
   const userRepository = new KnexUserRepository();
 
   fastify.post<{Params: {
-    topic_id: string;
+    slug: string;
   }
-  Body: CreateCommentInput}>('/topics/:topic_id/comments', async (request, reply) => {
+  Body: CreateCommentInput}>('/topics/:slug/comments', async (request, reply) => {
     const createComment = new CreateCommentStory(commentRepository, topicRepository, userRepository);
     const result = await createComment.execute({
       ...request.body,
-      topicId: request.params.topic_id,
+      topicSlug: request.params.slug,
       userId: getLoggedUserId(request),
     });
 
@@ -29,18 +29,18 @@ export const CommentController: FastifyPluginCallback = async (fastify) => {
 
   fastify.get<{
     Params: {
-      topic_id: string,
+      slug: string,
     }
     Querystring: {
       page: number,
       size: number
     }  
-  }>('/topics/:topic_id/comments', async (request) => {
-    const findComments = new FindCommentsByTopicStory(commentRepository);
+  }>('/topics/:slug/comments', async (request) => {
+    const findComments = new FindCommentsByTopicStory(commentRepository,topicRepository);
     const result = await findComments.execute({
       size: request.query.size,
       page: request.query.page,
-      topicId: request.params.topic_id,
+      topicSlug: request.params.slug,
     });
 
     return result.map(paged => {

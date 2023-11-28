@@ -7,10 +7,11 @@ import { Option } from '@/@shared/option';
 import { TopicNotFound } from '@/application/topic/error/topic_not_found';
 import { UserRepository } from '@/application/user/user.repository';
 import { UserNotAuthenticatedError } from '@/application/user/error/user_not_authenticated.error';
+import { Slug } from '@/@shared/vo/slug.vo';
 
 export interface CreateCommentInput {
   body: string;
-  topicId: string;
+  topicSlug: string;
   userId: string;
   replyToId?: string;
 }
@@ -23,13 +24,11 @@ export class CreateCommentStory {
   ) {}
 
   async execute(input: CreateCommentInput) {
-    const topicIdResult = UUID4.of(input.topicId);
+    const topic = await this.topicRepository.findBySlug(Slug.ofText(input.topicSlug).unwrap());
 
-    if (Result.isFail(topicIdResult)) {
-      return topicIdResult;
+    if (Option.isNone(topic)) {
+      return Result.fail(new TopicNotFound());
     }
-
-    const topicId = topicIdResult.unwrap();
 
     const userIdResult = UUID4.of(input.userId);
 
@@ -53,14 +52,11 @@ export class CreateCommentStory {
     
     const author = userResult.unwrap();
  
-    if (Option.isNone(await this.topicRepository.findById(topicId))) {
-      return Result.fail(new TopicNotFound());
-    }
 
-    
+
     const commentResult = CommentEntity.of({
       body: input.body,
-      topicId,
+      topicId: topic.unwrap().id,
       author,
       replyTo: replyToIdResult.unwrap(),
     });
