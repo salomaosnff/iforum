@@ -4,7 +4,6 @@ export interface createCommentInput {
   body: string,
   replyTo?: string
 }
-
 export class CreateCommentStory {
   constructor(private readonly commentService: Services.Comments) {}
 
