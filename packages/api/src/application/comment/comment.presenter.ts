@@ -8,5 +8,6 @@ export function publicPresenter(comment: CommentEntity){
     author: UserPresenter.publicPresenter(comment.author),
     created_at: comment.createdAt,
     edited_at: comment.editedAt,
+    rate: comment.rate,
   };
 }

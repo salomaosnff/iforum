@@ -739,9 +739,9 @@ paths:
             schema:
               type: object
               required:
-                - rate
+                - value
               properties:
-                rate:
+                value:
                   description: >
                     Taxa de avaliação do tópico
                     1 - Gostei
@@ -797,9 +797,9 @@ paths:
             schema:
               type: object
               required:
-                - rate
+                - value
               properties:
-                rate:
+                value:
                   description: >
                     Taxa de avaliação do comentário
                     1 - Gostei

@@ -6,6 +6,7 @@ import { FindTopicsByUserFeed } from '@/application/topic/stories/find_by_user_f
 import { KnexTopicRepository } from '@/infra/knex/topic/topic.repository';
 import { KnexUserRepository } from '@/infra/knex/user/user.repository';
 import { getLoggedUserId } from '../util';
+import { RateTopicBySlug, RateTopicBySlugInput } from '@/application/topic/stories/rate_topic.story';
 
 export const TopicController: FastifyPluginCallback = async (fastify) => {
   const topicRepository = new KnexTopicRepository();
@@ -56,5 +57,21 @@ export const TopicController: FastifyPluginCallback = async (fastify) => {
         items: paged.items.map(TopicPresenter.publicPresenter),
       };
     });
+  });
+
+  fastify.post<{
+    Body: RateTopicBySlugInput
+  }>('/topics/:slug/rate', async (request) => {
+    const { slug } = request.params as { slug: string };
+
+    const rateTopic = new RateTopicBySlug(topicRepository, userRepository);
+
+    const result = await rateTopic.execute({
+      slug,
+      userId: getLoggedUserId(request),
+      value: request.body.value,
+    });
+
+    return result; 
   });
 };

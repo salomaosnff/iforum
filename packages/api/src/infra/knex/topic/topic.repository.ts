@@ -8,6 +8,7 @@ import { TopicEntity } from '@/core/topic/topic.entity';
 import { UserEntity } from '@/core/user/user.entity';
 import { TopicModel } from './topic.model';
 import { UserModel } from '../user/user.model';
+import { RateModel } from './rate.model';
 
 export class KnexTopicRepository implements TopicRepository {
   async create(topic: TopicEntity): Promise<Result<TopicEntity, Error>> {
@@ -69,5 +70,25 @@ export class KnexTopicRepository implements TopicRepository {
     await TopicModel.query().update(model).where('id', '=', model.id);
 
     return Result.ok(topic);
+  }
+
+  async rateTopic(topicId: Id<string>, userId: Id<string>, value: number): Promise<Result<void, Error>> {
+    value = Math.sign(value);
+    
+    const rate = await RateModel.query().where('topic_id', topicId.value).andWhere('user_id', userId.value).first();
+
+    if (rate) {
+      await RateModel.query().update({ value }).where('id', rate.id);
+    }
+    else {
+      await RateModel.query().insert({
+        topic_id: topicId.value,
+        user_id: userId.value,
+        value,
+      });
+    }
+
+    await TopicModel.query().update({ rate: TopicModel.raw('topic.rate + $0', [value]) }).where('id', topicId.value);
+    return Result.ok();
   }
 }

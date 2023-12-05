@@ -2,6 +2,7 @@
 import { Option } from '@/@shared/option';
 import { Paged } from '@/@shared/paged';
 import { Result } from '@/@shared/result';
+import { Id } from '@/@shared/vo/Id.vo';
 import { Slug } from '@/@shared/vo/slug.vo';
 import { TopicEntity } from '@/core/topic/topic.entity';
 import { UserEntity } from '@/core/user/user.entity';
@@ -34,4 +35,6 @@ export interface TopicRepository {
     delete(topic: TopicEntity): Promise<Result<void, Error>>;
 
     update(topic: TopicEntity): Promise<Result<TopicEntity, Error>>;
+
+    rateTopic(topicId: Id, userId: Id, value: number): Promise<Result<void, Error>>
 }
