@@ -1,30 +1,30 @@
 <script setup lang="ts">
-const users = [
-  {
-    id: 'salomaosnff',
-    username: 'Salomão Neto',
-    photo: 'https://github.com/salomaosnff.png',
-    score: 1234,
-  },
-  {
-    id: 'JoaoManoelVK',
-    username: 'João Manoel',
-    photo: 'https://github.com/JoaoManoelVK.png',
-    score: 1234,
-  },
-  {
-    id: 'eniokarlos',
-    username: 'Ênio Karlos',
-    photo: 'https://github.com/eniokarlos.png',
-    score: 1234,
-  },
-  {
-    id: 'NatanT',
-    username: 'Natan Tôrres',
-    photo: 'https://github.com/Natan-Torres-0x00.png',
-    score: 1234,
-  },
-];
+// const users = [
+//   {
+//     id: 'salomaosnff',
+//     username: 'Salomão Neto',
+//     photo: 'https://github.com/salomaosnff.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'JoaoManoelVK',
+//     username: 'João Manoel',
+//     photo: 'https://github.com/JoaoManoelVK.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'eniokarlos',
+//     username: 'Ênio Karlos',
+//     photo: 'https://github.com/eniokarlos.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'NatanT',
+//     username: 'Natan Tôrres',
+//     photo: 'https://github.com/Natan-Torres-0x00.png',
+//     score: 1234,
+//   },
+// ];
 </script>
 
 <template>
@@ -66,7 +66,7 @@ const users = [
           </RouterLink>
         </UiBtn>
       </section>
-      <section class="p-4 bg--panel rounded-md mb-2">
+      <!-- <section class="p-4 bg--panel rounded-md mb-2">
         <h3 class="text-6 font-title mb-2">
           Precisando de Ajuda?
         </h3>
@@ -80,7 +80,7 @@ const users = [
             Preciso de ajuda
           </RouterLink>
         </UiBtn>
-      </section>
+      </section> -->
       <section class="p-4 bg--panel rounded-md mb-2">
         <h3 class="text-6 font-title mb-2">
           Compartilhe Seu Conhecimento
@@ -98,7 +98,7 @@ const users = [
       </section>
     </main>
     <div class="w-80">
-      <h3 class="text-6 font-title mb-2">
+      <!-- <h3 class="text-6 font-title mb-2">
         Top Usuários
       </h3>
 
@@ -121,7 +121,7 @@ const users = [
             </p>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>

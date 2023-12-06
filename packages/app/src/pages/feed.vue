@@ -3,34 +3,35 @@ import { Form } from 'vee-validate';
 import { useTopicContainer } from '@/container/topic';
 import { CreateTopicStory } from '@/core/domain/topic/stories/create_topic.story';
 import { GetFeedUseCase } from '@/core/domain/topic/stories/get_feed.story';
+import { RateTopicStory } from '@/core/domain/topic/stories/rate_topic.story';
 import { Models } from 'swagger:iforum';
 
-const users = [
-  {
-    id: 'salomaosnff',
-    username: 'Salomão Neto',
-    photo: 'https://github.com/salomaosnff.png',
-    score: 1234,
-  },
-  {
-    id: 'JoaoManoelVK',
-    username: 'João Manoel',
-    photo: 'https://github.com/JoaoManoelVK.png',
-    score: 1234,
-  },
-  {
-    id: 'eniokarlos',
-    username: 'Ênio Karlos',
-    photo: 'https://github.com/eniokarlos.png',
-    score: 1234,
-  },
-  {
-    id: 'NatanT',
-    username: 'Natan Tôrres',
-    photo: 'https://github.com/Natan-Torres-0x00.png',
-    score: 1234,
-  },
-];
+// const users = [
+//   {
+//     id: 'salomaosnff',
+//     username: 'Salomão Neto',
+//     photo: 'https://github.com/salomaosnff.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'JoaoManoelVK',
+//     username: 'João Manoel',
+//     photo: 'https://github.com/JoaoManoelVK.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'eniokarlos',
+//     username: 'Ênio Karlos',
+//     photo: 'https://github.com/eniokarlos.png',
+//     score: 1234,
+//   },
+//   {
+//     id: 'NatanT',
+//     username: 'Natan Tôrres',
+//     photo: 'https://github.com/Natan-Torres-0x00.png',
+//     score: 1234,
+//   },
+// ];
 
 const router = useRouter();
 
@@ -38,6 +39,8 @@ const [
   createTopic,
   getFeed,
 ] = useTopicContainer(CreateTopicStory, GetFeedUseCase);
+
+const [rate_topic] = useTopicContainer(RateTopicStory);
 
 const form = reactive({
   title: '',
@@ -63,6 +66,16 @@ const feed = ref<Models.Topic[]>([]);
 getFeed.execute().then((topics) => {
   feed.value = topics.items ?? [];
 });
+
+async function voteUp(topic: Models.Topic) {
+  const result = await rate_topic.up(topic.slug);
+  Object.assign(topic, result);
+}
+
+async function voteDown(topic: Models.Topic) {
+  const result = await rate_topic.down(topic.slug);
+  Object.assign(topic, result);
+}
 
 </script>
 
@@ -116,19 +129,25 @@ getFeed.execute().then((topics) => {
       >
         <header class="flex gap-8">
           <div class="flex flex-col items-center justify-center">
-            <button class="h-6 flex items-center opacity-30">
+            <!-- <button class="h-6 flex items-center opacity-30">
               <UiIcon
                 class="text-10"
                 name="menu-up"
               />
-            </button>
-            <span class="text-6 font-bold">{{ topic.rate }}</span>
+            </button> -->
+            <!-- <span class="text-6 font-bold">{{ topic.rate }}</span>
             <button class="h-6 flex items-center opacity-30">
               <UiIcon
                 class="text-10"
                 name="menu-down"
               />
-            </button>
+            </button> -->
+            <AppRate
+              v-model="topic.rate"
+              class="!text-6"
+              @up="voteUp(topic)"
+              @down="voteDown(topic)"
+            />
           </div>
           <div class="flex-1">
             <h1 class="mt-2 font-bold">
@@ -155,7 +174,7 @@ getFeed.execute().then((topics) => {
       </article>
     </main>
     <div class="w-80">
-      <h3 class="text-6 font-title mb-2">
+      <!-- <h3 class="text-6 font-title mb-2">
         Top Usuários
       </h3>
 
@@ -178,7 +197,7 @@ getFeed.execute().then((topics) => {
             </p>
           </div>
         </li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>

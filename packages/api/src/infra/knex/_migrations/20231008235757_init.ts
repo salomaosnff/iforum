@@ -29,7 +29,7 @@ export async function up(knex: Knex): Promise<void> {
 
       table.timestamps(true, true);
 
-      table.string('slug', 255).notNullable();
+      table.string('slug', 255).notNullable().unique({ indexName: 'UQ_topic_slug' });
 
       table.string('title', 255).notNullable();
 

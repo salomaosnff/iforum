@@ -4,6 +4,7 @@ import { HTTP_REQUEST } from './global';
 import { GetCommentsUseCase } from '@/core/domain/comments/stories/get_comment.story';
 import { FindCommentsByTopic } from '@/core/domain/comments/stories/find_comments_by_topic.story';
 import { CreateCommentStory } from '../core/domain/comments/stories/create_comment.stories';
+import { RateCommentStory } from '@/core/domain/comments/stories/rate_comment.story';
 
 export const useCommentContainer = createResolver('comment', ({
   singleton,inject,
@@ -12,4 +13,5 @@ export const useCommentContainer = createResolver('comment', ({
   singleton(CreateCommentStory, () => new CreateCommentStory(inject(Services.Comments)));
   singleton(FindCommentsByTopic, () => new FindCommentsByTopic(inject(Services.Comments)));
   singleton(GetCommentsUseCase, () => new GetCommentsUseCase(inject(Services.Comments)));
+  singleton(RateCommentStory, () => new RateCommentStory(inject(Services.Comments)));
 });

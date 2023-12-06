@@ -1,9 +1,9 @@
-{
+{   
     "editor.tabSize": 2,
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
-        // "source.fixAll.eslint": true,
-        // "source.organizeImports": false
+        //  "source.fixAll.eslint": true,
+        //  "source.organizeImports": false
     },
     "files.eol": "\n",
     "editor.mouseWheelZoom": true,
@@ -19,5 +19,6 @@
     "css.lint.unknownAtRules": "ignore",
     "typescript.preferences.autoImportFileExcludePatterns": [
         "vue-router"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

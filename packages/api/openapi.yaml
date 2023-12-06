@@ -747,9 +747,6 @@ paths:
                     1 - Gostei
                     -1 - Não gostei
                   type: number
-                  enum:
-                    - '1'
-                    - '-1'
       responses:
         200:
           description: Tópico avaliado com sucesso
@@ -805,9 +802,6 @@ paths:
                     1 - Gostei
                     -1 - Não gostei
                   type: number
-                  enum:
-                    - '1'
-                    - '-1'
       responses:
         200:
           description: Comentário avaliado com sucesso

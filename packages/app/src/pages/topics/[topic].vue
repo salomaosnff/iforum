@@ -4,6 +4,7 @@ import { FindTopicBySlug } from '@/core/domain/topic/stories/find_topic_by_slug.
 import { CreateCommentStory } from '@/core/domain/comments/stories/create_comment.stories';
 import { GetCommentsUseCase } from '@/core/domain/comments/stories/get_comment.story';
 import { RateTopicStory } from '@/core/domain/topic/stories/rate_topic.story';
+// import { RateCommentStory} from '@/core/domain/comments/stories/rate_comment.story';
 import { Models } from 'swagger:iforum';
 import { Form, FormActions, GenericObject } from 'vee-validate';
 import { useCommentContainer } from '@/container/comment';
@@ -47,6 +48,7 @@ const topic = ref({
 } as Models.Topic);
 
 const [rate_topic] = useTopicContainer(RateTopicStory);
+// const [rate_comment] = useCommentContainer(RateCommentStory);
 
 async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Comment>){
   const comment = await createComment.execute(route.params.topic, { body: commentForm.body });
@@ -90,6 +92,20 @@ const comments = ref<Models.PagedComments>();
 watch(() => route.params.topic, async (slug) => {
   comments.value = await getComments.execute(slug);
 },{ immediate: true });
+
+async function voteUp() {
+  const result = await rate_topic.up(topic.value.slug);
+  Object.assign(topic.value, result);
+}
+
+async function voteDown() {
+  const result = await rate_topic.down(topic.value.slug);
+  Object.assign(topic.value, result); 
+}
+
+// async function voteDownComment() {
+//   const result = await rate_comment.down(topic.value.slug, topic.value.id);
+// }
 </script>
 
 <template>
@@ -99,8 +115,8 @@ watch(() => route.params.topic, async (slug) => {
         <AppRate
           v-model="topic.rate"
           class="!text-6"
-          @up="rate_topic.up(topic.slug)"
-          @down="rate_topic.down(topic.slug)"
+          @up="voteUp"
+          @down="voteDown"
         />
         <div>
           <h1 class="mt-0">
@@ -162,6 +178,8 @@ watch(() => route.params.topic, async (slug) => {
             <AppRate
               v-model="comment.rate"
               class="text-6 min-w-14"
+              @up="voteUp"
+              @down="voteDown"
             />
             <div class="flex-1">
               <p class="mt-0">

@@ -5,6 +5,7 @@ import { UUID4 } from '@/@shared/vo/UUID4.vo';
 import { Slug } from '@/@shared/vo/slug.vo';
 import { Option } from '@/@shared/option';
 import { assignDefined } from '../_util/assign_defined';
+import { RateModel } from './rate.model';
 
 export class TopicModel extends BaseModel {
 
@@ -19,6 +20,7 @@ export class TopicModel extends BaseModel {
   rate?: number;
   tags?: string[];
   edited_at?: Date;
+  rates?: RateModel[];
 
   static get relationMappings() {
     return {
@@ -29,7 +31,15 @@ export class TopicModel extends BaseModel {
           from: 'topic.author_id',
           to: 'user.id',
         },
-      }, 
+      },
+      rates: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: RateModel,
+        join: {
+          from: 'topic.id',
+          to: 'rate.topic_id',
+        },
+      },
     };
   }
 

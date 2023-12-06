@@ -9,6 +9,14 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('user_id').references('id').inTable('user');
     table.integer('value').defaultTo(0);
     table.timestamps(true, true);
+    table.unique([
+      'topic_id',
+      'user_id',
+    ], { indexName: 'UQ_rate_topic_user' });
+    table.unique([
+      'comment_id',
+      'user_id',
+    ], { indexName: 'UQ_rate_comment_user' });
   });
 }
 

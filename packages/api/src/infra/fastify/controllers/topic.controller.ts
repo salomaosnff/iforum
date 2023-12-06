@@ -66,12 +66,12 @@ export const TopicController: FastifyPluginCallback = async (fastify) => {
 
     const rateTopic = new RateTopicBySlug(topicRepository, userRepository);
 
-    const result = await rateTopic.execute({
+    await rateTopic.execute({
       slug,
       userId: getLoggedUserId(request),
       value: request.body.value,
     });
 
-    return result; 
+    return (await new FindTopicBySlug(topicRepository).execute(slug)).map(TopicPresenter.publicPresenter);
   });
 };

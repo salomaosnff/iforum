@@ -1,16 +1,12 @@
 <script setup lang="ts">
-// import { useTopicContainer } from '@/container/topic';
-// import { RateTopicStory } from '@/core/domain/topic/stories/rate_topic.story';
-
-const props = defineProps({
-  modelValue: {
-    type: Number,
-    default: 0,
-  },
-});
+// const props = defineProps({
+//   modelValue: {
+//     type: Number,
+//     default: 0,
+//   },
+// });
 
 const emit = defineEmits<{
-  (name: 'update:model-value', value: number): void
   (name: 'up'): void
   (name: 'down'): void
 }>();
@@ -18,14 +14,10 @@ const emit = defineEmits<{
 
 
 function upvote() {
-  signal.value = 1;
-  emit('update:model-value', props.modelValue + 1);
   emit('up');
 }
 
 function downvote() {
-  signal.value = -1;
-  emit('update:model-value', props.modelValue - 1);
   emit('down');
 }
 
