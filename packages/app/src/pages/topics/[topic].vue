@@ -11,7 +11,6 @@ import { useCommentContainer } from '@/container/comment';
 
 const [
   createComment,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getComments,
 ] = useCommentContainer(CreateCommentStory, GetCommentsUseCase);
 
@@ -60,6 +59,8 @@ async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Co
   setTimeout(() => setErrors({ body: '' }), 1);
 }
 
+Comment;
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function replyComment(_: GenericObject, { resetForm }: FormActions<Models.Comment>) {
   // const comment = topic.value.comments.find(comment => comment.id === replyForm.value.replyTo);
@@ -95,18 +96,30 @@ watch(() => route.params.topic, async (slug) => {
 }, { immediate: true });
 
 async function voteUp() {
-  const result = await rate_topic.up(topic.value.slug);
+  const result = await rate_topic.up(route.params.topic);
   Object.assign(topic.value, result);
 }
 
 async function voteDown() {
-  const result = await rate_topic.down(topic.value.slug);
+  const result = await rate_topic.down(route.params.topic);
   Object.assign(topic.value, result);
 }
 
-// async function voteDownComment() {
-//   const result = await rate_comment.down(topic.value.slug, topic.value.id);
-// }
+async function voteUpComment(comment: Models.Comment) {
+  if (comment.id !== undefined) {
+    const result = await rate_comment.up(route.params.topic, comment.id);
+    return result;
+  }
+}
+
+async function voteDownComment(comment: Models.Comment) {
+  if (comment.id !== undefined) {
+    const result = await rate_comment.down(route.params.topic, comment.id);
+    return result;
+  }
+}
+
+
 </script>
 
 <template>
@@ -179,8 +192,8 @@ async function voteDown() {
             <AppRate
               v-model="comment.rate"
               class="text-6 min-w-14"
-              @up="voteUp"
-              @down="voteDown"
+              @up="voteUpComment(comment)"
+              @down="voteDownComment(comment)"
             />
             <div class="flex-1">
               <p class="mt-0">

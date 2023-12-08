@@ -1,10 +1,10 @@
 <script setup lang="ts">
-// const props = defineProps({
-//   modelValue: {
-//     type: Number,
-//     default: 0,
-//   },
-// });
+defineProps({
+  modelValue: {
+    type: Number,
+    default: 0,
+  },
+});
 
 const emit = defineEmits<{
   (name: 'up'): void
