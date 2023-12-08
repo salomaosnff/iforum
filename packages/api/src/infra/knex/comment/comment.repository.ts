@@ -5,6 +5,7 @@ import { Id } from '@/@shared/vo/Id.vo';
 import { CommentRepository } from '@/application/comment/comment.repository';
 import { CommentEntity } from '@/core/comment/comment.entity';
 import { CommentModel } from './comment.model';
+import { RateModel } from '../topic/rate.model';
 
 export class KnexCommentRepository implements CommentRepository {
   async create(comment: CommentEntity): Promise<Result<CommentEntity, Error>> {
@@ -54,4 +55,21 @@ export class KnexCommentRepository implements CommentRepository {
       totalPages: Math.ceil(totalItems / pageParams.size),
     });
   }
+  async rateComment(commentId: Id<string>, userId: Id<string>, value: number): Promise<Result<void, Error>> {
+    value = Math.sign(value);
+
+    await RateModel.query().insert({
+      comment_id: commentId.value,
+      user_id: userId.value,
+      value,
+    }).onConflict([
+      'comment_id',
+      'user_id',
+    ]).merge();
+
+    await CommentModel.query().update({ rate: CommentModel.relatedQuery('rates').sum('value') }).where('id', commentId.value);
+    
+    return Result.ok();
+  }
+  
 }

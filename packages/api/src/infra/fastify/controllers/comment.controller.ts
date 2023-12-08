@@ -6,6 +6,8 @@ import { getLoggedUserId } from '../util';
 import { KnexCommentRepository } from '@/infra/knex/comment/comment.repository';
 import { KnexTopicRepository } from '@/infra/knex/topic/topic.repository';
 import { KnexUserRepository } from '@/infra/knex/user/user.repository';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { RateCommentStory } from '@/application/comment/stories/rate_comment.story';
 
 export const CommentController: FastifyPluginCallback = async (fastify) => {
   const commentRepository = new KnexCommentRepository();
