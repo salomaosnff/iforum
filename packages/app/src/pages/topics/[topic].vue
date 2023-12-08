@@ -50,7 +50,7 @@ const topic = ref({
 const [rate_topic] = useTopicContainer(RateTopicStory);
 // const [rate_comment] = useCommentContainer(RateCommentStory);
 
-async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Comment>){
+async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Comment>) {
   const comment = await createComment.execute(route.params.topic, { body: commentForm.body });
 
   comments.value?.items?.unshift(comment);
@@ -60,7 +60,7 @@ async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Co
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function replyComment(_: GenericObject, { resetForm }: FormActions<Comment>) {
+function replyComment(_: GenericObject, { resetForm }: FormActions<Models.Comment>) {
   // const comment = topic.value.comments.find(comment => comment.id === replyForm.value.replyTo);
 
   // if (!comment) {
@@ -85,13 +85,13 @@ const sortedComments = computed(() => comments.value?.items?.slice()?.sort((a, b
 
 watch(() => route.params.topic, async (slug) => {
   topic.value = await findTopicBySlug.execute(slug);
-},{ immediate: true });
+}, { immediate: true });
 
 const comments = ref<Models.PagedComments>();
 
 watch(() => route.params.topic, async (slug) => {
   comments.value = await getComments.execute(slug);
-},{ immediate: true });
+}, { immediate: true });
 
 async function voteUp() {
   const result = await rate_topic.up(topic.value.slug);
@@ -100,7 +100,7 @@ async function voteUp() {
 
 async function voteDown() {
   const result = await rate_topic.down(topic.value.slug);
-  Object.assign(topic.value, result); 
+  Object.assign(topic.value, result);
 }
 
 // async function voteDownComment() {
