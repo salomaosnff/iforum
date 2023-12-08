@@ -4,7 +4,7 @@ import { FindTopicBySlug } from '@/core/domain/topic/stories/find_topic_by_slug.
 import { CreateCommentStory } from '@/core/domain/comments/stories/create_comment.stories';
 import { GetCommentsUseCase } from '@/core/domain/comments/stories/get_comment.story';
 import { RateTopicStory } from '@/core/domain/topic/stories/rate_topic.story';
-// import { RateCommentStory} from '@/core/domain/comments/stories/rate_comment.story';
+import { RateCommentStory } from '@/core/domain/comments/stories/rate_comment.story';
 import { Models } from 'swagger:iforum';
 import { Form, FormActions, GenericObject } from 'vee-validate';
 import { useCommentContainer } from '@/container/comment';
@@ -48,7 +48,8 @@ const topic = ref({
 } as Models.Topic);
 
 const [rate_topic] = useTopicContainer(RateTopicStory);
-// const [rate_comment] = useCommentContainer(RateCommentStory);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [rate_comment] = useCommentContainer(RateCommentStory);
 
 async function addComment(_: GenericObject, { setErrors }: FormActions<Models.Comment>) {
   const comment = await createComment.execute(route.params.topic, { body: commentForm.body });
