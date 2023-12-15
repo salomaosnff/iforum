@@ -19,12 +19,11 @@ export class BaseModel extends Model{
   }
 
   $beforeInsert(){
-    this.created_at = new Date();
-    this.updated_at = new Date();
+    this.created_at ??= new Date();
+    this.updated_at ??= new Date();
   } 
 
   $beforeUpdate() {
-    this.created_at = new Date();
     this.updated_at = new Date();
   }
 
